@@ -3,568 +3,2779 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The War on Saturated Fat: We Got It Wrong</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<title>The War on Saturated Fat — A Multimodal Composition</title>
+<meta name="description" content="A long-form research composition arguing that chronic inflammation, not saturated fat, is the engine of cardiovascular disease.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,800;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ════════════════════════════════════════════════════════════════
+   TOKENS — Editorial system, oklch low-chroma warm neutrals
+   ════════════════════════════════════════════════════════════════ */
 :root {
-  --ink:    #0f0d0a;
-  --cream:  #f6f1e8;
-  --paper:  #faf7f2;
-  --red:    #9b2335;
-  --gold:   #c49a00;
-  --teal:   #1a6b6b;
-  --border: #d8cebc;
-  --muted:  #6b6055;
+  /* ink scale — warm near-black through to soft body */
+  --ink-0:   oklch(0.18 0.014 60);
+  --ink-1:   oklch(0.26 0.014 60);
+  --ink-2:   oklch(0.40 0.013 62);
+  --ink-3:   oklch(0.55 0.012 65);
+  --ink-4:   oklch(0.70 0.011 68);
+
+  /* paper scale — cream through to nearly-white */
+  --paper-0: oklch(0.94 0.013 82);
+  --paper-1: oklch(0.96 0.011 82);
+  --paper-2: oklch(0.975 0.009 82);
+  --paper-3: oklch(0.99 0.005 82);
+
+  /* rules and hairlines */
+  --rule-1:  oklch(0.86 0.014 72);
+  --rule-2:  oklch(0.78 0.018 70);
+  --rule-3:  oklch(0.65 0.018 68);
+
+  /* semantic accents — same lightness, varied hue, restrained chroma */
+  --gold:    oklch(0.62 0.13 78);
+  --gold-soft: oklch(0.78 0.08 80);
+  --gold-bg: oklch(0.94 0.04 82);
+  --teal:    oklch(0.48 0.07 205);
+  --teal-soft: oklch(0.72 0.04 205);
+  --teal-bg: oklch(0.93 0.025 200);
+  --rust:    oklch(0.48 0.13 28);
+  --rust-soft: oklch(0.78 0.07 30);
+  --rust-bg: oklch(0.93 0.04 30);
+
+  /* typography */
+  --ff-display: 'Playfair Display', 'Times New Roman', serif;
+  --ff-body:    'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --ff-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* measure */
+  --measure: 36rem;
+  --measure-wide: 64rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
+
+/* ════════════════════════════════════════════════════════════════
+   RESET + BASE
+   ════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 300;
-  font-size: 1rem;
-  line-height: 1.85;
+  background: var(--paper-1);
+  color: var(--ink-1);
+  font-family: var(--ff-body);
+  font-weight: 380;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'onum' 1, 'pnum' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-.masthead {
-  background: var(--ink);
-  color: var(--cream);
-  padding: 36px 40px 28px;
-  text-align: center;
-  border-bottom: 5px double var(--gold);
+::selection { background: var(--gold); color: var(--paper-3); }
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+/* paper grain */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none;
+  background-image:
+    radial-gradient(oklch(0.45 0.014 60 / 0.018) 1px, transparent 1px),
+    radial-gradient(oklch(0.45 0.014 60 / 0.012) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+  mix-blend-mode: multiply;
+  z-index: 200;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   READING PROGRESS + RUNNING HEAD
+   ════════════════════════════════════════════════════════════════ */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px; z-index: 300;
+  background: transparent;
+}
+.progress__bar {
+  height: 100%;
+  background: var(--gold);
+  width: var(--p, 0%);
+  transition: width 0.06s linear;
+}
+
+.running-head {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 14px 32px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: linear-gradient(180deg, var(--paper-1) 0%, var(--paper-1) 70%, transparent 100%);
+  z-index: 250;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+  pointer-events: none;
+}
+.running-head.is-visible { opacity: 1; transform: translateY(0); }
+.running-head__l { display: flex; gap: 14px; align-items: center; }
+.running-head__r { display: flex; gap: 14px; align-items: center; }
+.running-head .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); display: inline-block; }
+.running-head .sect { color: var(--ink-1); }
+
+/* ════════════════════════════════════════════════════════════════
+   COVER
+   ════════════════════════════════════════════════════════════════ */
+.cover {
+  min-height: 100vh;
+  padding: 64px clamp(24px, 5vw, 80px) 56px;
+  position: relative;
+  display: flex; flex-direction: column;
+  background:
+    radial-gradient(120% 80% at 50% -10%, oklch(0.97 0.012 82) 0%, transparent 60%),
+    var(--paper-1);
+  overflow: hidden;
+}
+.cover__meta {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--rule-2);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.cover__meta-l, .cover__meta-r { display: flex; gap: 22px; align-items: center; }
+.cover__mark {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-0);
+}
+.cover__mark::before {
+  content: '§';
+  display: inline-block;
+  margin-right: 6px;
+  color: var(--gold);
+  font-style: normal;
+}
+
+.cover__core {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  padding: 8vh 0 4vh;
+  align-content: center;
+}
+.cover__kicker {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 12px;
+}
+.cover__kicker::after {
+  content: '';
+  flex: 0 0 56px;
+  height: 1px;
+  background: var(--gold);
+}
+.cover__title {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 9.5vw, 8.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  color: var(--ink-0);
+  text-wrap: balance;
+}
+.cover__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+.cover__title .small {
+  display: block;
+  font-size: 0.45em;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  margin-top: 0.4em;
+}
+
+.cover__standfirst {
+  font-family: var(--ff-body);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  line-height: 1.55;
+  color: var(--ink-1);
+  max-width: 48ch;
+  margin-top: 8px;
+}
+.cover__standfirst .lead-cap {
+  font-style: normal;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.4em;
+  line-height: 1;
+  float: left;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--ink-0);
+}
+
+.cover__foot {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule-2);
+}
+.cover__foot-cell {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.cover__foot-cell strong {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-0);
+}
+@media (max-width: 720px) {
+  .cover__foot { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+}
+
+/* scroll hint */
+.cover__hint {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.cover__hint .line {
+  width: 1px; height: 28px;
+  background: linear-gradient(180deg, var(--ink-3) 0%, transparent 100%);
+  animation: hint-pulse 2.4s var(--ease-in-out) infinite;
+}
+@keyframes hint-pulse {
+  0%, 100% { transform: scaleY(0.5); transform-origin: top; opacity: 0.4; }
+  50%      { transform: scaleY(1); opacity: 1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TABLE OF CONTENTS — leader-dotted editorial index
+   ════════════════════════════════════════════════════════════════ */
+.toc {
+  background: var(--paper-0);
+  border-top: 1px solid var(--rule-2);
+  border-bottom: 1px solid var(--rule-2);
+  padding: 56px clamp(24px, 5vw, 80px);
+}
+.toc__inner { max-width: 880px; margin: 0 auto; }
+.toc__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 32px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule-2);
+}
+.toc__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--ink-0);
+}
+.toc__title::before {
+  content: 'Contents';
+  display: block;
+  font-family: var(--ff-mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.toc__count {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.toc__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 56px;
+  row-gap: 2px;
+}
+@media (max-width: 720px) { .toc__list { grid-template-columns: 1fr; } }
+.toc__item {
+  display: flex;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px dotted var(--rule-2);
+  position: relative;
+}
+.toc__num {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  flex: 0 0 36px;
+}
+.toc__name {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-0);
+  text-decoration: none;
+  flex: 1;
+  transition: color 0.2s;
+}
+.toc__name:hover { color: var(--gold); }
+.toc__leader {
+  flex: 1;
+  border-bottom: 1px dotted var(--rule-2);
+  margin: 0 8px;
+  position: relative; top: -4px;
+  display: none;
+}
+.toc__page {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  flex: 0 0 auto;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LAYOUT — page + sticky rail
+   ════════════════════════════════════════════════════════════════ */
+.page {
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 80px clamp(24px, 5vw, 64px);
+}
+@media (max-width: 900px) { .page { grid-template-columns: 1fr; } }
+
+.rail {
+  position: sticky;
+  top: 64px;
+  align-self: start;
+  height: max-content;
+  padding-top: 8px;
+}
+@media (max-width: 900px) { .rail { display: none; } }
+.rail__title {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule-2);
+  margin-bottom: 14px;
+}
+.rail__list { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+.rail__a {
+  display: flex; align-items: baseline; gap: 10px;
+  text-decoration: none;
+  color: var(--ink-3);
+  padding: 6px 0 6px 14px;
+  position: relative;
+  font-size: 13px;
+  line-height: 1.35;
+  transition: color 0.2s, padding-left 0.25s var(--ease-out);
+}
+.rail__a::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 1px;
+  background: var(--rule-2);
+  transition: width 0.25s var(--ease-out), background 0.2s;
+}
+.rail__a:hover { color: var(--ink-0); padding-left: 18px; }
+.rail__a:hover::before { width: 10px; background: var(--ink-2); }
+.rail__a.is-active { color: var(--ink-0); padding-left: 22px; }
+.rail__a.is-active::before { width: 16px; background: var(--gold); height: 2px; }
+.rail__num {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gold);
+  flex: 0 0 22px;
+  letter-spacing: 0.05em;
+}
+.rail__label {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MAIN CONTENT
+   ════════════════════════════════════════════════════════════════ */
+.main { min-width: 0; }
+
+.section {
+  margin-bottom: 96px;
+  scroll-margin-top: 64px;
+}
+.section + .section { padding-top: 0; }
+
+.section__head {
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--rule-2);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px 28px;
+  align-items: baseline;
+}
+.section__marker {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+  display: flex; align-items: baseline; gap: 8px;
+  white-space: nowrap;
+}
+.section__marker .glyph {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1;
+}
+.section__kicker {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  align-self: end;
+}
+.section__title {
+  grid-column: 1 / -1;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.018em;
+  color: var(--ink-0);
+  text-wrap: balance;
+}
+.section__title em { font-weight: 500; color: var(--gold); }
+
+.section__standfirst {
+  grid-column: 1 / -1;
+  font-family: var(--ff-body);
+  font-style: italic;
+  font-weight: 380;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin-top: 8px;
+}
+
+.prose { max-width: var(--measure); }
+.prose p { margin-bottom: 22px; }
+.prose p > strong { font-weight: 600; color: var(--ink-0); }
+.prose p > em { font-style: italic; }
+
+.prose .first-of-section::first-letter {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  float: left;
+  font-size: 4.6em;
+  line-height: 0.85;
+  padding: 0.05em 0.08em 0 0;
+  color: var(--gold);
+}
+
+/* superscript inline citations */
+sup.cite {
+  font-family: var(--ff-mono);
+  font-size: 0.65em;
+  font-weight: 500;
+  color: var(--gold);
+  cursor: pointer;
+  text-decoration: none;
+  vertical-align: super;
+  margin-left: 1px;
+}
+sup.cite a { text-decoration: none; color: inherit; }
+sup.cite a:hover { color: var(--rust); }
+
+/* intro grid w/ sidebar callouts */
+.intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 56px;
+}
+@media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; } }
+
+.aside {
+  display: flex; flex-direction: column; gap: 24px;
+  position: sticky; top: 64px; align-self: start; height: max-content;
+}
+@media (max-width: 900px) { .aside { position: static; } }
+
+.callout {
+  background: var(--paper-2);
+  border: 1px solid var(--rule-1);
+  padding: 24px 24px 22px;
+  position: relative;
+}
+.callout::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 22px; right: 22px;
+  height: 2px;
+  background: var(--gold);
+}
+.callout__kicker {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.callout__kicker .num {
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.callout__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--ink-0);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule-1);
+}
+.callout p {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin-bottom: 10px;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout p strong { color: var(--ink-0); font-weight: 600; }
+
+.stat-list { display: flex; flex-direction: column; }
+.stat-list__row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px dotted var(--rule-2);
+  font-size: 0.82rem;
+}
+.stat-list__row:last-child { border-bottom: none; }
+.stat-list__key {
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  flex: 0 0 auto;
+}
+.stat-list__val {
+  font-family: var(--ff-body);
+  font-style: italic;
+  color: var(--ink-0);
+  text-align: right;
+  line-height: 1.35;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   THESIS BLOCK — display moment
+   ════════════════════════════════════════════════════════════════ */
+.thesis {
+  margin: 24px 0 88px;
+  padding: 56px clamp(24px, 5vw, 80px);
+  background: var(--ink-0);
+  color: var(--paper-1);
   position: relative;
   overflow: hidden;
 }
-.masthead::after {
+.thesis::before {
+  content: '“';
+  position: absolute;
+  top: -56px; left: -8px;
+  font-family: var(--ff-display);
+  font-weight: 900;
+  font-size: 28rem;
+  line-height: 1;
+  color: oklch(0.62 0.13 78 / 0.10);
+  pointer-events: none;
+  user-select: none;
+}
+.thesis__inner { max-width: 880px; margin: 0 auto; position: relative; }
+.thesis__kicker {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 22px;
+  display: flex; align-items: center; gap: 14px;
+}
+.thesis__kicker::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: oklch(0.62 0.13 78 / 0.4);
+  max-width: 200px;
+}
+.thesis__text {
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  line-height: 1.4;
+  color: var(--paper-2);
+  text-wrap: balance;
+}
+.thesis__text strong {
+  font-weight: 700;
+  font-style: normal;
+  color: var(--gold);
+}
+.thesis__sig {
+  margin-top: 32px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(0.85 0.014 60 / 0.5);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PULL QUOTE — magazine style with hanging quotation
+   ════════════════════════════════════════════════════════════════ */
+.pull {
+  margin: 36px 0 36px -16px;
+  padding: 4px 0 4px 40px;
+  border-left: 2px solid var(--gold);
+  position: relative;
+  max-width: 44rem;
+}
+.pull::before {
+  content: '“';
+  position: absolute;
+  left: 8px; top: -18px;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--gold);
+}
+.pull__text {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: var(--ink-0);
+  text-wrap: balance;
+  margin-bottom: 12px;
+}
+.pull__cite {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  font-style: normal;
+}
+.pull__cite::before {
+  content: '— ';
+  color: var(--gold);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MECHANISM CHAIN — replaces emoji chain with numbered editorial flow
+   ════════════════════════════════════════════════════════════════ */
+.mech {
+  margin: 64px 0;
+  padding: 64px clamp(24px, 5vw, 80px);
+  background: var(--ink-0);
+  color: var(--paper-1);
+  position: relative;
+  overflow: hidden;
+}
+.mech::before {
   content: '';
   position: absolute; inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(196,154,0,.06) 48px, rgba(196,154,0,.06) 49px);
+  background-image:
+    radial-gradient(oklch(0.95 0 0 / 0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
   pointer-events: none;
 }
-.kicker { font-size:.68rem; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
-.masthead h1 { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,5.5vw,4.4rem); font-weight:900; line-height:1.05; position:relative; z-index:1; }
-.masthead h1 em { color:var(--gold); font-style:italic; }
-.tagline { margin-top:14px; font-size:.95rem; font-style:italic; color:rgba(246,241,232,.7); max-width:640px; margin-left:auto; margin-right:auto; position:relative; z-index:1; }
-.hr-gold { border:none; border-top:1px solid var(--gold); margin:18px auto; width:56%; }
-.byline { font-size:.7rem; letter-spacing:.15em; color:rgba(246,241,232,.55); }
-nav { background:var(--paper); border-bottom:2px solid var(--border); padding:10px 32px; display:flex; flex-wrap:wrap; justify-content:center; gap:4px; }
-nav a { font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink); text-decoration:none; padding:6px 14px; border:1px solid transparent; transition:.2s; }
-nav a:hover { border-color:var(--gold); color:var(--gold); }
-.wrap { max-width:1080px; margin:0 auto; padding:48px 24px; }
-.label { display:block; font-size:.65rem; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
-h2 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:700; line-height:1.18; margin-bottom:18px; }
-h3 { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; margin-bottom:12px; }
-p { margin-bottom:16px; }
-.section-divider { border:none; border-top:2px solid var(--border); margin:56px 0; }
-.thesis { background:var(--red); color:#fff; padding:36px 44px; margin-bottom:56px; position:relative; overflow:hidden; }
-.thesis::before { content:'"'; font-family:'Playfair Display',serif; font-size:14rem; line-height:1; position:absolute; top:-20px; left:12px; color:rgba(255,255,255,.08); pointer-events:none; }
-.thesis .label { color:rgba(255,255,255,.6); }
-.thesis p { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.1rem,2.5vw,1.55rem); line-height:1.5; margin-bottom:0; position:relative; z-index:1; }
-.intro-grid { display:grid; grid-template-columns:3fr 2fr; gap:48px; }
-@media(max-width:680px){ .intro-grid{ grid-template-columns:1fr; } }
-.sidebar { display:flex; flex-direction:column; gap:20px; }
-.info-box { background:var(--paper); border:1px solid var(--border); border-top:3px solid var(--gold); padding:20px 22px; }
-.info-box h4 { font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border); }
-.info-box p { font-size:.85rem; color:var(--muted); margin-bottom:10px; }
-.info-box p:last-child { margin-bottom:0; }
-.stat-row { display:flex; justify-content:space-between; font-size:.82rem; padding:5px 0; border-bottom:1px dotted var(--border); gap:8px; }
-.stat-row:last-child { border-bottom:none; }
-.stat-row strong { color:var(--ink); font-weight:600; text-align:right; }
-.pullquote { border-left:5px solid var(--teal); background:rgba(26,107,107,.06); padding:22px 32px; margin:32px 0; }
-.pullquote p { font-family:'Playfair Display',serif; font-style:italic; font-size:1.2rem; margin-bottom:8px; }
-.pullquote cite { font-size:.76rem; color:var(--muted); letter-spacing:.08em; }
-.mechanism { background:var(--ink); color:var(--cream); padding:48px 40px; margin:56px 0; }
-.mechanism h2 { color:var(--cream); text-align:center; margin-bottom:8px; }
-.mechanism .sub { text-align:center; font-size:.9rem; color:rgba(246,241,232,.6); margin-bottom:36px; }
-.chain { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:0; }
-.chain-node { background:rgba(255,255,255,.07); border:1px solid rgba(196,154,0,.35); padding:18px 20px; text-align:center; min-width:130px; max-width:155px; flex-shrink:0; }
-.chain-node .icon { font-size:1.8rem; margin-bottom:6px; }
-.chain-node h4 { font-family:'Playfair Display',serif; font-size:.85rem; margin-bottom:4px; color:var(--gold); }
-.chain-node p { font-size:.72rem; color:rgba(246,241,232,.65); margin:0; line-height:1.4; }
-.chain-arrow { font-size:1.6rem; color:var(--gold); padding:0 6px; flex-shrink:0; }
-@media(max-width:680px){ .chain{ flex-direction:column; } .chain-arrow{ transform:rotate(90deg); } }
-.mechanism .caption { text-align:center; font-size:.75rem; font-style:italic; color:rgba(246,241,232,.4); margin-top:28px; }
-.lmhr-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin:28px 0; }
-@media(max-width:620px){ .lmhr-grid{ grid-template-columns:1fr; } }
-.lmhr-card { padding:28px 26px; background:var(--paper); border:1px solid var(--border); }
-.lmhr-card.highlight { background:rgba(26,107,107,.06); border-color:var(--teal); border-top:3px solid var(--teal); }
-.lmhr-card h4 { font-family:'Playfair Display',serif; font-size:1.05rem; margin-bottom:12px; }
-.lmhr-card.highlight h4 { color:var(--teal); }
-.lmhr-card p { font-size:.88rem; }
-.lmhr-stats { display:flex; flex-wrap:wrap; gap:16px; margin:28px 0; }
-.stat-bubble { background:var(--ink); color:var(--cream); padding:16px 22px; text-align:center; flex:1; min-width:140px; }
-.stat-bubble .number { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--gold); line-height:1; display:block; }
-.stat-bubble .desc { font-size:.72rem; color:rgba(246,241,232,.7); margin-top:4px; line-height:1.35; }
-.video-block { background:var(--paper); border:1px solid var(--border); padding:28px 32px; margin:56px 0; }
-.video-block h3 { margin-bottom:6px; }
-.video-block > p { font-size:.9rem; color:var(--muted); margin-bottom:18px; }
-.video-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; }
-.video-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
-.video-caption { font-size:.76rem; font-style:italic; color:var(--muted); margin-top:10px; text-align:center; }
-.compare-table { width:100%; border-collapse:collapse; margin:28px 0; font-size:.88rem; }
-.compare-table th { background:var(--ink); color:var(--cream); padding:12px 16px; text-align:left; font-family:'Playfair Display',serif; font-size:.9rem; font-weight:400; }
-.compare-table th:first-child { width:28%; }
-.compare-table td { padding:11px 16px; border-bottom:1px solid var(--border); vertical-align:top; }
-.compare-table tr:nth-child(even) td { background:var(--paper); }
-.compare-table .good { color:var(--teal); font-weight:600; }
-.compare-table .bad { color:var(--red); font-weight:600; }
-.chart-wrap { margin:28px 0; }
-.chart-row { display:grid; grid-template-columns:210px 1fr 70px; align-items:center; gap:14px; margin-bottom:12px; }
-@media(max-width:560px){ .chart-row{ grid-template-columns:1fr; gap:4px; } }
-.chart-label { font-size:.82rem; color:var(--ink); text-align:right; }
-@media(max-width:560px){ .chart-label{ text-align:left; } }
-.chart-track { background:var(--border); height:30px; border-radius:2px; overflow:hidden; }
-.chart-bar { height:100%; border-radius:2px; display:flex; align-items:center; padding-left:10px; font-size:.7rem; font-weight:600; color:white; letter-spacing:.04em; }
-.chart-pct { font-size:.82rem; font-weight:600; }
-.chart-note { font-size:.75rem; font-style:italic; color:var(--muted); margin-top:8px; }
-.conclusion { background:var(--ink); color:var(--cream); padding:52px 48px; margin:56px 0; border-left:6px solid var(--gold); }
-.conclusion h2 { color:var(--cream); margin-bottom:20px; }
-.conclusion p { color:rgba(246,241,232,.85); margin-bottom:16px; }
-.conclusion p:last-child { margin-bottom:0; }
-.works-cited { border-top:3px double var(--ink); padding-top:36px; margin-bottom:48px; }
-.works-cited h2 { font-size:1.3rem; letter-spacing:.04em; margin-bottom:24px; }
-.cit-list { list-style:none; }
-.cit-list li { font-size:.84rem; line-height:1.65; padding:10px 0 10px 30px; text-indent:-30px; border-bottom:1px dotted var(--border); }
-.cit-list li:last-child { border-bottom:none; }
-.cit-list a { color:var(--teal); }
-footer { background:var(--ink); color:rgba(246,241,232,.45); text-align:center; padding:22px; font-size:.74rem; letter-spacing:.12em; }
+.mech__inner { max-width: 1080px; margin: 0 auto; position: relative; }
+.mech__head { text-align: center; margin-bottom: 48px; }
+.mech__kicker {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  display: inline-flex; align-items: center; gap: 14px;
+}
+.mech__kicker::before, .mech__kicker::after {
+  content: '';
+  display: inline-block;
+  width: 32px; height: 1px;
+  background: oklch(0.62 0.13 78 / 0.5);
+}
+.mech__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  line-height: 1.1;
+  color: var(--paper-2);
+  margin-bottom: 12px;
+}
+.mech__sub {
+  font-family: var(--ff-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: oklch(0.85 0.014 60 / 0.7);
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+.chain {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  position: relative;
+}
+@media (max-width: 980px) { .chain { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 620px) { .chain { grid-template-columns: 1fr; } }
+
+.node {
+  background: oklch(0.24 0.014 60);
+  border: 1px solid oklch(0.4 0.014 60);
+  padding: 22px 18px 20px;
+  position: relative;
+  display: flex; flex-direction: column;
+  transition: transform 0.4s var(--ease-out), border-color 0.3s;
+}
+.node:hover { transform: translateY(-3px); border-color: var(--gold-soft); }
+.node__num {
+  position: absolute;
+  top: -10px; left: 16px;
+  background: var(--ink-0);
+  padding: 0 8px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+}
+.node__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--gold-soft);
+  margin: 6px 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid oklch(0.4 0.014 60);
+}
+.node__body {
+  font-family: var(--ff-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: oklch(0.85 0.014 60 / 0.85);
+}
+.node--final {
+  background: oklch(0.32 0.10 28);
+  border-color: var(--rust-soft);
+}
+.node--final .node__title { color: oklch(0.92 0.06 30); border-bottom-color: oklch(0.45 0.10 28); }
+.node--final .node__num { color: oklch(0.85 0.10 30); }
+
+.mech__caption {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: oklch(0.85 0.014 60 / 0.45);
+  text-align: center;
+  margin-top: 36px;
+  font-style: normal;
+  line-height: 1.6;
+}
+.mech__caption strong { color: var(--gold-soft); font-weight: 500; }
+
+/* ════════════════════════════════════════════════════════════════
+   LMHR STATS — big-number editorial callouts
+   ════════════════════════════════════════════════════════════════ */
+.bignums {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule-2);
+  border: 1px solid var(--rule-2);
+  margin: 40px 0;
+}
+@media (max-width: 880px) { .bignums { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .bignums { grid-template-columns: 1fr; } }
+.bignums__cell {
+  background: var(--paper-2);
+  padding: 28px 24px 26px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.bignums__num {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink-0);
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: baseline; gap: 6px;
+}
+.bignums__num .unit {
+  font-family: var(--ff-mono);
+  font-size: 0.32em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  font-style: normal;
+}
+.bignums__label {
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-top: 8px;
+  border-top: 1px solid var(--rule-1);
+}
+.bignums__desc {
+  font-family: var(--ff-body);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   COMPARISON CARDS  (LMHR section)
+   ════════════════════════════════════════════════════════════════ */
+.compare-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule-2);
+  margin: 32px 0;
+  border: 1px solid var(--rule-2);
+}
+@media (max-width: 720px) { .compare-cards { grid-template-columns: 1fr; } }
+.compare-cards__cell {
+  background: var(--paper-2);
+  padding: 28px 26px;
+  display: flex; flex-direction: column;
+}
+.compare-cards__cell--accent {
+  background: var(--gold-bg);
+}
+.compare-cards__h {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.compare-cards__t {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.25;
+  color: var(--ink-0);
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule-2);
+}
+.compare-cards__cell p {
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   COMPARISON TABLE  (LDL section)
+   ════════════════════════════════════════════════════════════════ */
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 32px 0 8px;
+  font-size: 0.9rem;
+}
+.cmp-table thead th {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 14px 16px;
+  text-align: left;
+  background: var(--ink-0);
+  color: var(--paper-2);
+  border: 1px solid var(--ink-0);
+}
+.cmp-table thead th:first-child { width: 24%; color: var(--gold); }
+.cmp-table tbody td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--rule-1);
+  border-right: 1px solid var(--rule-1);
+  vertical-align: top;
+  line-height: 1.55;
+  background: var(--paper-3);
+}
+.cmp-table tbody td:first-child {
+  background: var(--paper-2);
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--ink-0);
+  border-left: 1px solid var(--rule-1);
+}
+.cmp-table tbody tr:nth-child(even) td:not(:first-child) { background: var(--paper-2); }
+.cmp-table .bad   { color: var(--rust); font-weight: 500; }
+.cmp-table .good  { color: var(--teal); font-weight: 500; }
+.cmp-table .bad::before,
+.cmp-table .good::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  margin-right: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+  transform: translateY(-1px);
+}
+.cmp-table .bad::before  { background: var(--rust); }
+.cmp-table .good::before { background: var(--teal); }
+.fig-caption {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  line-height: 1.6;
+  margin-top: 6px;
+  text-transform: none;
+}
+.fig-caption strong { color: var(--ink-1); font-weight: 500; }
+
+/* ════════════════════════════════════════════════════════════════
+   DATA CHART — animated bars
+   ════════════════════════════════════════════════════════════════ */
+.chart {
+  margin: 40px 0;
+  padding: 32px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-1);
+}
+.chart__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule-1);
+}
+.chart__title {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--ink-0);
+}
+.chart__title::before {
+  content: 'Figure 2';
+  display: block;
+  font-family: var(--ff-mono);
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.chart__legend {
+  display: flex; gap: 16px; align-items: center;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+.chart__legend span { display: flex; align-items: center; gap: 6px; }
+.chart__legend i {
+  width: 10px; height: 10px;
+  display: inline-block;
+  font-style: normal;
+}
+.chart__row {
+  display: grid;
+  grid-template-columns: 220px 1fr 90px;
+  gap: 18px;
+  align-items: center;
+  padding: 8px 0;
+}
+@media (max-width: 720px) {
+  .chart__row { grid-template-columns: 1fr; gap: 6px; padding: 12px 0; border-bottom: 1px dotted var(--rule-2); }
+}
+.chart__label {
+  font-family: var(--ff-body);
+  font-size: 0.86rem;
+  color: var(--ink-0);
+  text-align: right;
+  line-height: 1.3;
+}
+@media (max-width: 720px) { .chart__label { text-align: left; font-weight: 500; } }
+.chart__track {
+  height: 28px;
+  background: var(--paper-1);
+  border: 1px solid var(--rule-1);
+  position: relative;
+  overflow: hidden;
+}
+.chart__track::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 24px, oklch(0.85 0.014 72 / 0.6) 24px, oklch(0.85 0.014 72 / 0.6) 25px);
+  pointer-events: none;
+}
+.chart__bar {
+  height: 100%;
+  width: 0;
+  display: flex; align-items: center;
+  padding-left: 12px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  white-space: nowrap; overflow: hidden;
+  transition: width 1.2s var(--ease-out);
+  position: relative;
+}
+.chart__row.is-in-view .chart__bar { width: var(--w); }
+.chart__bar--rust   { background: var(--rust); }
+.chart__bar--gold   { background: var(--gold); color: var(--ink-0); }
+.chart__bar--teal   { background: var(--teal); }
+.chart__pct {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-1);
+  text-align: right;
+}
+.chart__note {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-style: normal;
+  color: var(--ink-3);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-1);
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   VIDEO BLOCK
+   ════════════════════════════════════════════════════════════════ */
+.video {
+  margin: 24px 0;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-1);
+  padding: 32px 32px 28px;
+}
+.video__head { margin-bottom: 18px; }
+.video__kicker {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.video__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--ink-0);
+  margin-bottom: 8px;
+}
+.video__lead {
+  font-family: var(--ff-body);
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  margin-bottom: 22px;
+  max-width: 56ch;
+}
+.video__wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  background: var(--ink-0);
+  overflow: hidden;
+  border: 1px solid var(--ink-0);
+}
+.video__wrap iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video__caption {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-style: normal;
+  color: var(--ink-3);
+  margin-top: 14px;
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   KEY TERMS / FAQ / STAKEHOLDERS — card grid
+   ════════════════════════════════════════════════════════════════ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule-2);
+  border: 1px solid var(--rule-2);
+}
+@media (max-width: 720px) { .cards { grid-template-columns: 1fr; } }
+.card {
+  background: var(--paper-2);
+  padding: 28px 28px 26px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.card--accent { background: var(--gold-bg); }
+.card__num {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card__num::after {
+  content: '';
+  flex: 1; height: 1px; background: var(--rule-1);
+  max-width: 60px;
+}
+.card__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  color: var(--ink-0);
+  margin-bottom: 12px;
+}
+.card p {
+  font-family: var(--ff-body);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-1);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CONCLUSION
+   ════════════════════════════════════════════════════════════════ */
+.conclusion {
+  background: var(--ink-0);
+  color: var(--paper-1);
+  padding: 72px clamp(24px, 5vw, 88px);
+  margin: 88px -64px 0;
+  position: relative;
+  overflow: hidden;
+}
+@media (max-width: 900px) { .conclusion { margin: 64px -24px 0; } }
+.conclusion::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--gold);
+}
+.conclusion__inner { max-width: 760px; margin: 0 auto; }
+.conclusion__kicker {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+.conclusion__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.018em;
+  color: var(--paper-2);
+  margin-bottom: 36px;
+  text-wrap: balance;
+}
+.conclusion p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: oklch(0.92 0.012 70 / 0.95);
+  margin-bottom: 22px;
+}
+.conclusion p:last-child { margin-bottom: 0; }
+.conclusion p:first-of-type::first-letter {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  float: left;
+  font-size: 4.6em;
+  line-height: 0.85;
+  padding: 0.05em 0.08em 0 0;
+  color: var(--gold);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   WORKS CITED
+   ════════════════════════════════════════════════════════════════ */
+.cited {
+  padding: 80px clamp(24px, 5vw, 64px);
+  background: var(--paper-0);
+  border-top: 1px solid var(--rule-2);
+}
+.cited__inner { max-width: 920px; margin: 0 auto; }
+.cited__head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 22px;
+  margin-bottom: 36px;
+  border-bottom: 2px solid var(--ink-0);
+}
+.cited__title {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: 2rem;
+  color: var(--ink-0);
+}
+.cited__title::before {
+  content: 'Bibliography';
+  display: block;
+  font-family: var(--ff-mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.cited__meta {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.cited__list {
+  list-style: none;
+  counter-reset: cit;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.cited__list li {
+  counter-increment: cit;
+  padding: 14px 0 14px 56px;
+  border-bottom: 1px dotted var(--rule-2);
+  position: relative;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink-1);
+}
+.cited__list li::before {
+  content: counter(cit, decimal-leading-zero);
+  position: absolute;
+  left: 0; top: 16px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+.cited__list li:last-child { border-bottom: none; }
+.cited__list em { font-style: italic; color: var(--ink-0); }
+.cited__list a { color: var(--teal); text-decoration: underline; text-decoration-color: oklch(0.48 0.07 205 / 0.3); }
+.cited__list strong { font-weight: 600; color: var(--rust); }
+
+/* ════════════════════════════════════════════════════════════════
+   COLOPHON / FOOTER
+   ════════════════════════════════════════════════════════════════ */
+.colophon {
+  padding: 56px clamp(24px, 5vw, 64px) 64px;
+  background: var(--ink-0);
+  color: oklch(0.85 0.014 60 / 0.5);
+}
+.colophon__inner {
+  max-width: 1180px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 56px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.8;
+}
+@media (max-width: 720px) { .colophon__inner { grid-template-columns: 1fr; gap: 32px; } }
+.colophon__h {
+  color: var(--gold);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid oklch(0.62 0.13 78 / 0.25);
+}
+.colophon__title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 18px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--paper-2);
+  margin-bottom: 6px;
+}
+.colophon__rule {
+  margin: 36px auto 0;
+  max-width: 1180px;
+  border-top: 1px solid oklch(0.62 0.13 78 / 0.2);
+  padding-top: 22px;
+  display: flex; justify-content: space-between;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(0.85 0.014 60 / 0.4);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   REVEAL ON SCROLL
+   ════════════════════════════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.reveal.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   INTERACTIVE LAB — 3D scene + locked content + sliders
+   ════════════════════════════════════════════════════════════════ */
+.lab {
+  margin: 24px 0 88px;
+  background: var(--ink-0);
+  color: var(--paper-2);
+  padding: 56px clamp(24px, 5vw, 80px) 64px;
+  position: relative;
+  overflow: hidden;
+}
+.lab__inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+@media (max-width: 880px) { .lab__inner { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+.lab__head { margin-bottom: 22px; }
+.lab__kicker {
+  font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.32em;
+  text-transform: uppercase; color: var(--gold);
+  display: inline-flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.lab__kicker::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+.lab__title {
+  font-family: var(--ff-display); font-weight: 700; font-style: italic;
+  font-size: clamp(1.6rem, 3vw, 2.4rem); line-height: 1.1; color: var(--paper-2);
+  text-wrap: balance; margin-bottom: 14px;
+}
+.lab__title em { font-style: normal; color: var(--gold); }
+.lab__lead {
+  font-family: var(--ff-body); font-size: 0.95rem; line-height: 1.6;
+  color: oklch(0.85 0.014 60 / 0.75); max-width: 46ch;
+}
+.lab__canvas-wrap {
+  position: relative; aspect-ratio: 1; width: 100%; min-height: 440px;
+  background: radial-gradient(ellipse at center, oklch(0.22 0.014 60) 0%, oklch(0.16 0.014 60) 70%);
+  border: 1px solid oklch(0.32 0.014 60);
+  cursor: grab;
+}
+.lab__canvas-wrap.dragging { cursor: grabbing; }
+.lab__canvas-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
+.lab__hud {
+  position: absolute; left: 12px; top: 12px;
+  font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.14em;
+  color: oklch(0.85 0.014 60 / 0.7); pointer-events: none;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.lab__hud .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 8px; animation: blink 1.6s infinite; }
+@keyframes blink { 50% { opacity: 0.3; } }
+.lab__hud-r { position: absolute; right: 12px; top: 12px; text-align: right; }
+.lab__cta {
+  position: absolute; bottom: 12px; left: 12px; right: 12px;
+  font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.18em;
+  color: oklch(0.85 0.014 60 / 0.55); text-transform: uppercase;
+  display: flex; justify-content: space-between; pointer-events: none;
+}
+
+.lab__controls { display: flex; flex-direction: column; gap: 18px; margin-top: 24px; }
+.lab__slider { display: flex; flex-direction: column; gap: 8px; }
+.lab__slider-row { display: flex; justify-content: space-between; align-items: baseline; }
+.lab__slider-label {
+  font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: oklch(0.85 0.014 60 / 0.7);
+}
+.lab__slider-val {
+  font-family: var(--ff-display); font-style: italic; font-weight: 500;
+  font-size: 18px; color: var(--gold);
+}
+.lab__slider input[type=range] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 2px;
+  background: oklch(0.4 0.014 60); outline: none; cursor: pointer;
+}
+.lab__slider input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 16px; height: 16px;
+  background: var(--gold); border-radius: 50%; cursor: grab;
+  box-shadow: 0 0 0 4px oklch(0.62 0.13 78 / 0.18);
+}
+.lab__slider input[type=range]::-moz-range-thumb {
+  width: 16px; height: 16px; background: var(--gold); border: none;
+  border-radius: 50%; cursor: grab;
+}
+.lab__readout {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: oklch(0.32 0.014 60); border: 1px solid oklch(0.32 0.014 60);
+  margin-top: 14px;
+}
+.lab__readout-cell { background: oklch(0.20 0.014 60); padding: 14px; }
+.lab__readout-k {
+  font-family: var(--ff-mono); font-size: 9px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: oklch(0.85 0.014 60 / 0.55); margin-bottom: 6px;
+}
+.lab__readout-v {
+  font-family: var(--ff-display); font-weight: 700; font-size: 22px;
+  color: var(--paper-2); font-variant-numeric: tabular-nums;
+  transition: color 0.4s;
+}
+.lab__readout-cell.is-hot .lab__readout-v { color: var(--rust-soft); }
+
+/* ── Click-to-reveal mechanics ── */
+[data-locked="true"] { position: relative; }
+[data-locked="true"] .node__body,
+[data-locked="true"] .bignums__num,
+[data-locked="true"] .bignums__desc {
+  filter: blur(7px);
+  opacity: 0.45;
+  transition: filter 0.6s var(--ease-out), opacity 0.6s var(--ease-out);
+  user-select: none;
+}
+[data-locked="false"] .node__body,
+[data-locked="false"] .bignums__num,
+[data-locked="false"] .bignums__desc { filter: none; opacity: 1; }
+
+.tap-hint {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--gold);
+  cursor: pointer; z-index: 2;
+  background: linear-gradient(180deg, transparent 0%, oklch(0.97 0.012 82 / 0.4) 100%);
+  transition: opacity 0.5s var(--ease-out);
+}
+.node .tap-hint { background: linear-gradient(180deg, transparent 0%, oklch(0.24 0.014 60 / 0.6) 100%); }
+.tap-hint .pill {
+  padding: 8px 14px; border: 1px solid var(--gold);
+  background: oklch(0.94 0.04 82 / 0.4);
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: background 0.2s;
+}
+.node .tap-hint .pill { background: oklch(0.24 0.014 60 / 0.7); }
+.tap-hint .pill::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: blink 1.4s infinite;
+}
+.tap-hint:hover .pill { background: var(--gold); color: var(--ink-0); }
+.tap-hint:hover .pill::before { background: var(--ink-0); }
+[data-locked="false"] .tap-hint { opacity: 0; pointer-events: none; }
+
+.bignums__cell[data-locked="true"] { cursor: pointer; }
+.bignums__cell[data-locked="true"]:hover { background: var(--gold-bg); }
+.node[data-locked="true"] { cursor: pointer; }
+.node[data-locked="true"]:hover { border-color: var(--gold); }
+
+.engagement-bar {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  background: var(--ink-0); color: var(--paper-2);
+  padding: 10px 18px; border-radius: 999px;
+  font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 14px;
+  z-index: 240;
+  opacity: 0; transform: translate(-50%, 16px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  pointer-events: none;
+  box-shadow: 0 10px 30px oklch(0.18 0.014 60 / 0.25);
+}
+.engagement-bar.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.engagement-bar .track {
+  position: relative; width: 140px; height: 3px;
+  background: oklch(0.4 0.014 60); border-radius: 2px; overflow: hidden;
+}
+.engagement-bar .fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--gold); width: 0%;
+  transition: width 0.5s var(--ease-out);
+}
+.engagement-bar .count { color: var(--gold); font-weight: 500; }
+
+/* ════════════════════════════════════════════════════════════════
+   PRINT
+   ════════════════════════════════════════════════════════════════ */
+@media print {
+  body { background: white; color: black; font-size: 11pt; }
+  .running-head, .progress, .rail, .cover__hint { display: none; }
+  .cover { min-height: auto; page-break-after: always; }
+  .section { page-break-inside: avoid; }
+  .conclusion, .thesis, .mech { background: white !important; color: black !important; }
+  .conclusion *, .thesis *, .mech * { color: black !important; }
+  .page { display: block; padding: 0; }
+}
 </style>
 </head>
 <body>
 
-<header class="masthead">
-  <p class="kicker">Rutgers University &nbsp;·&nbsp; College Writing &nbsp;·&nbsp; Spring 2026 &nbsp;·&nbsp; Multimodal Composition</p>
-  <h1>The War on <em>Saturated Fat</em>:<br>We Got It Wrong</h1>
-  <hr class="hr-gold">
-  <p class="tagline">Saturated fat is not the enemy. The real culprit is what we eat it <em>with</em> - and the chronic inflammation that follows from insulin resistance.</p>
-  <p class="byline">Research Question &nbsp;|&nbsp; Nutrition Science &nbsp;|&nbsp; Cardiovascular Health &nbsp;|&nbsp; Public Policy</p>
+<!-- Reading progress bar -->
+<div class="progress" aria-hidden="true"><div class="progress__bar" id="progressBar"></div></div>
+
+<!-- Running head -->
+<header class="running-head" id="runningHead" aria-hidden="true">
+  <div class="running-head__l">
+    <span class="dot"></span>
+    <span>The War on Saturated Fat</span>
+    <span>·</span>
+    <span>Multimodal Composition</span>
+  </div>
+  <div class="running-head__r">
+    <span>§ <span class="sect" id="sectMarker">I</span></span>
+    <span>·</span>
+    <span id="readMarker">00%</span>
+  </div>
 </header>
 
-<nav>
-  <a href="#personal">Personal Statement</a>
-  <a href="#thesis">Thesis</a>
-  <a href="#intro">Introduction</a>
-  <a href="#mechanism">The Real Cause</a>
-  <a href="#case-study">Case Study</a>
-  <a href="#lmhr">LMHR Evidence</a>
-  <a href="#key-terms">Key Terms</a>
-  <a href="#stakeholders">Stakeholders</a>
-  <a href="#ldl">The LDL Myth</a>
-  <a href="#video">Expert Video</a>
-  <a href="#interesting-fact">Interesting Fact</a>
-  <a href="#data">Data</a>
-  <a href="#faq">FAQ</a>
-  <a href="#conclusion">Conclusion</a>
-  <a href="#works-cited">Works Cited</a>
-</nav>
+<!-- ═══════════════════════════════ COVER ═══════════════════════════════ -->
+<section class="cover" data-screen-label="00 Cover">
+  <div class="cover__meta">
+    <div class="cover__meta-l">
+      <span>Vol. I · No. 1</span>
+      <span>Spring 2026</span>
+      <span>College Writing 101</span>
+    </div>
+    <div class="cover__mark">Multimodal Composition</div>
+    <div class="cover__meta-r">
+      <span>Rutgers University</span>
+      <span>$0.00</span>
+    </div>
+  </div>
 
-<main class="wrap">
+  <div class="cover__core">
+    <div>
+      <div class="cover__kicker">A research composition in fifteen movements</div>
+      <h1 class="cover__title">
+        The War<br>
+        on <em>Saturated</em><br>
+        <em>Fat</em><span class="small">— and what we got wrong</span>
+      </h1>
+    </div>
 
-  <section id="personal">
-    <span class="label">Personal Statement</span>
-    <h2>Why This Topic Matters to Me</h2>
-    <p>I chose this topic because nutrition science is something I follow closely, and the saturated fat debate is one of the most frustrating examples I have encountered of how public health policy can lag decades behind the actual research. Growing up, I was surrounded by the standard dietary messaging: fat is bad, eat less of it, switch to low-fat everything. That advice shaped what my family ate, what was served in schools, and what doctors told patients for fifty years.</p>
-    <p>What started to change my thinking was learning about people who eat extremely high-fat, low-carbohydrate diets and have virtually no arterial plaque despite cholesterol levels that would alarm any standard physician. That seemed impossible under the model I had been taught. It sent me down a research path that led to the LMHR phenomenon, the CANTOS trial, and a much deeper understanding of how insulin resistance and chronic inflammation actually drive cardiovascular disease.</p>
-    <p>My research question is: is saturated fat actually the cause of heart disease, or is the real problem the combination of saturated fat with the high-carbohydrate diet that dominates modern eating? I believe the evidence strongly supports the latter - and that getting this wrong has had serious consequences for public health across the world.</p>
-  </section>
+    <p class="cover__standfirst">
+      <span class="lead-cap">F</span>or fifty years we were told saturated fat was the enemy. The evidence
+      assembled here argues a different culprit altogether: chronic inflammation,
+      driven by insulin resistance, and ignited not by fat — but by what we ate
+      it with.
+    </p>
+  </div>
 
-  <hr class="section-divider">
+  <div class="cover__foot">
+    <div class="cover__foot-cell">
+      <span>Author</span>
+      <strong>Dario Braccili</strong>
+    </div>
+    <div class="cover__foot-cell">
+      <span>Discipline</span>
+      <strong>Nutrition Science</strong>
+    </div>
+    <div class="cover__foot-cell">
+      <span>Sources</span>
+      <strong>12 Peer-Reviewed</strong>
+    </div>
+    <div class="cover__foot-cell">
+      <span>Reading Time</span>
+      <strong>~28 minutes</strong>
+    </div>
+  </div>
 
+  <div class="cover__hint">
+    <span>Begin Reading</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ CONTENTS ═══════════════════════════════ -->
+<section class="toc" aria-labelledby="toc-h">
+  <div class="toc__inner">
+    <div class="toc__head">
+      <h2 class="toc__title" id="toc-h">In this issue</h2>
+      <span class="toc__count">Fifteen sections · One argument</span>
+    </div>
+    <ol class="toc__list">
+      <li class="toc__item"><span class="toc__num">§ 01</span><a class="toc__name" href="#personal">Personal Statement</a><span class="toc__page">p. 01</span></li>
+      <li class="toc__item"><span class="toc__num">§ 02</span><a class="toc__name" href="#thesis">Central Argument</a><span class="toc__page">p. 03</span></li>
+      <li class="toc__item"><span class="toc__num">§ 03</span><a class="toc__name" href="#intro">Introduction</a><span class="toc__page">p. 04</span></li>
+      <li class="toc__item"><span class="toc__num">§ 04</span><a class="toc__name" href="#mechanism">The Real Mechanism</a><span class="toc__page">p. 07</span></li>
+      <li class="toc__item"><span class="toc__num">§ 05</span><a class="toc__name" href="#lmhr">Lean Mass Hyper-Responders</a><span class="toc__page">p. 10</span></li>
+      <li class="toc__item"><span class="toc__num">§ 06</span><a class="toc__name" href="#ldl">The LDL Myth</a><span class="toc__page">p. 13</span></li>
+      <li class="toc__item"><span class="toc__num">§ 07</span><a class="toc__name" href="#video">Expert Perspective</a><span class="toc__page">p. 16</span></li>
+      <li class="toc__item"><span class="toc__num">§ 08</span><a class="toc__name" href="#data">Where the Risk Lives</a><span class="toc__page">p. 17</span></li>
+      <li class="toc__item"><span class="toc__num">§ 09</span><a class="toc__name" href="#case-study">A Case Study</a><span class="toc__page">p. 19</span></li>
+      <li class="toc__item"><span class="toc__num">§ 10</span><a class="toc__name" href="#key-terms">Key Terms</a><span class="toc__page">p. 21</span></li>
+      <li class="toc__item"><span class="toc__num">§ 11</span><a class="toc__name" href="#stakeholders">Stakeholders</a><span class="toc__page">p. 23</span></li>
+      <li class="toc__item"><span class="toc__num">§ 12</span><a class="toc__name" href="#interesting-fact">A Striking Trial</a><span class="toc__page">p. 25</span></li>
+      <li class="toc__item"><span class="toc__num">§ 13</span><a class="toc__name" href="#faq">Questions Raised</a><span class="toc__page">p. 26</span></li>
+      <li class="toc__item"><span class="toc__num">§ 14</span><a class="toc__name" href="#conclusion">Conclusion</a><span class="toc__page">p. 28</span></li>
+      <li class="toc__item"><span class="toc__num">§ 15</span><a class="toc__name" href="#works-cited">Works Cited</a><span class="toc__page">p. 30</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ PAGE ═══════════════════════════════ -->
+<div class="page">
+
+  <!-- Sticky side rail -->
+  <aside class="rail" aria-label="Section navigation">
+    <p class="rail__title">Sections</p>
+    <ul class="rail__list">
+      <li><a class="rail__a" href="#personal"><span class="rail__num">01</span><span class="rail__label">Personal</span></a></li>
+      <li><a class="rail__a" href="#thesis"><span class="rail__num">02</span><span class="rail__label">Thesis</span></a></li>
+      <li><a class="rail__a" href="#intro"><span class="rail__num">03</span><span class="rail__label">Introduction</span></a></li>
+      <li><a class="rail__a" href="#mechanism"><span class="rail__num">04</span><span class="rail__label">Mechanism</span></a></li>
+      <li><a class="rail__a" href="#lmhr"><span class="rail__num">05</span><span class="rail__label">LMHR Evidence</span></a></li>
+      <li><a class="rail__a" href="#ldl"><span class="rail__num">06</span><span class="rail__label">LDL Myth</span></a></li>
+      <li><a class="rail__a" href="#video"><span class="rail__num">07</span><span class="rail__label">Expert Video</span></a></li>
+      <li><a class="rail__a" href="#data"><span class="rail__num">08</span><span class="rail__label">The Data</span></a></li>
+      <li><a class="rail__a" href="#case-study"><span class="rail__num">09</span><span class="rail__label">Case Study</span></a></li>
+      <li><a class="rail__a" href="#key-terms"><span class="rail__num">10</span><span class="rail__label">Key Terms</span></a></li>
+      <li><a class="rail__a" href="#stakeholders"><span class="rail__num">11</span><span class="rail__label">Stakeholders</span></a></li>
+      <li><a class="rail__a" href="#interesting-fact"><span class="rail__num">12</span><span class="rail__label">CANTOS</span></a></li>
+      <li><a class="rail__a" href="#faq"><span class="rail__num">13</span><span class="rail__label">FAQ</span></a></li>
+      <li><a class="rail__a" href="#conclusion"><span class="rail__num">14</span><span class="rail__label">Conclusion</span></a></li>
+      <li><a class="rail__a" href="#works-cited"><span class="rail__num">15</span><span class="rail__label">Bibliography</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- Main column -->
+  <main class="main">
+
+    <!-- ─── 01 Personal Statement ─── -->
+    <section class="section reveal" id="personal" data-screen-label="01 Personal Statement">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>01</span></div>
+        <span class="section__kicker">Personal Statement</span>
+        <h2 class="section__title">Why this topic <em>matters</em> to me</h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">I chose this topic because nutrition science is something I follow closely, and the saturated fat debate is one of the most frustrating examples I have encountered of how public health policy can lag decades behind the actual research. Growing up, I was surrounded by the standard dietary messaging: fat is bad, eat less of it, switch to low-fat everything. That advice shaped what my family ate, what was served in schools, and what doctors told patients for fifty years.</p>
+        <p>What started to change my thinking was learning about people who eat extremely high-fat, low-carbohydrate diets and have virtually no arterial plaque despite cholesterol levels that would alarm any standard physician. That seemed impossible under the model I had been taught. It sent me down a research path that led to the LMHR phenomenon, the CANTOS trial, and a much deeper understanding of how insulin resistance and chronic inflammation actually drive cardiovascular disease.</p>
+        <p>My research question is: <em>is saturated fat actually the cause of heart disease, or is the real problem the combination of saturated fat with the high-carbohydrate diet that dominates modern eating?</em> I believe the evidence strongly supports the latter — and that getting this wrong has had serious consequences for public health across the world.</p>
+      </div>
+    </section>
+
+    <!-- ─── 02 Thesis ─── -->
+    <section class="section reveal" id="thesis" data-screen-label="02 Central Argument">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>02</span></div>
+        <span class="section__kicker">Central Argument</span>
+        <h2 class="section__title">The thesis, in <em>one sentence</em></h2>
+      </header>
+    </section>
+
+    <!-- ─── Interactive Lab: 3D inflammation playground (full-bleed, escapes .page grid) ─── -->
+    <section class="section reveal" id="lab" data-screen-label="02b Interactive Lab" style="grid-column: 1 / -1; margin-left: calc(-1 * clamp(24px, 5vw, 64px)); margin-right: calc(-1 * clamp(24px, 5vw, 64px));">
+      <div class="lab">
+        <div class="lab__inner">
+          <div>
+            <div class="lab__head">
+              <div class="lab__kicker">Interactive Exhibit · No. 1</div>
+              <h3 class="lab__title">Drive the <em>carb load</em>. Watch what happens inside the artery.</h3>
+              <p class="lab__lead">A simplified visual model of the central claim. Native LDL particles (gold) circulate freely. As refined-carbohydrate intake climbs, inflammatory cytokines (rust) flood the field, the endothelium degrades, and macrophages begin engulfing oxidized LDL. <strong style="color:var(--gold-soft);">Drag</strong> the canvas to rotate · <strong style="color:var(--gold-soft);">click</strong> to release a macrophage · <strong style="color:var(--gold-soft);">slide</strong> to change conditions.</p>
+            </div>
+            <div class="lab__controls">
+              <div class="lab__slider">
+                <div class="lab__slider-row">
+                  <span class="lab__slider-label">Refined-carb intake</span>
+                  <span class="lab__slider-val" id="carbVal">moderate</span>
+                </div>
+                <input type="range" id="carbSlider" min="0" max="100" value="30" step="1">
+              </div>
+              <div class="lab__readout">
+                <div class="lab__readout-cell" id="r-insulin">
+                  <div class="lab__readout-k">Insulin Resp.</div>
+                  <div class="lab__readout-v" data-base="30">30</div>
+                </div>
+                <div class="lab__readout-cell" id="r-inflam">
+                  <div class="lab__readout-k">Inflammation</div>
+                  <div class="lab__readout-v" data-base="12">12</div>
+                </div>
+                <div class="lab__readout-cell" id="r-endo">
+                  <div class="lab__readout-k">Endothelium</div>
+                  <div class="lab__readout-v" data-base="94">94%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lab__canvas-wrap" id="labCanvasWrap">
+            <div class="lab__hud">
+              <div><span class="dot"></span>SYS · LIVE</div>
+              <div>VIEW · ARTERIAL LUMEN</div>
+            </div>
+            <div class="lab__hud lab__hud-r">
+              <div>RENDER · WEBGL</div>
+              <div id="fpsReadout">— fps</div>
+            </div>
+            <div class="lab__cta">
+              <span>↻ DRAG TO ROTATE</span>
+              <span>● CLICK TO INTERACT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <div class="thesis">
-      <span class="label">Central Argument</span>
-      <p>Saturated fat, eaten in the context of a low-carbohydrate diet, is not a meaningful driver of heart disease. The true engine of cardiovascular damage is chronic inflammation - caused by insulin resistance and elevated blood sugar - conditions created not by fat alone, but by the modern high-carbohydrate diet that fat has been blamed for enabling.</p>
+      <div class="thesis__inner">
+        <p class="thesis__kicker">A claim, plainly stated</p>
+        <p class="thesis__text">
+          Saturated fat, eaten in the context of a low-carbohydrate diet, is <strong>not</strong> a meaningful driver of heart disease. The true engine of cardiovascular damage is <strong>chronic inflammation</strong> — caused by insulin resistance and elevated blood sugar — conditions created not by fat alone, but by the modern high-carbohydrate diet that fat has been blamed for enabling.
+        </p>
+        <p class="thesis__sig">— Central argument · to be defended over fifteen sections</p>
+      </div>
     </div>
-  </section>
 
-  <section id="intro">
-    <div class="intro-grid">
-      <div>
-        <span class="label">Introduction</span>
-        <h2>Fifty Years of Blaming the Wrong Food</h2>
-        <p>Since the 1970s, Americans have been told that saturated fat - found in butter, red meat, eggs, and cheese - is a primary cause of heart disease. The logic seemed airtight: saturated fat raises LDL cholesterol, high LDL clogs arteries, clogged arteries cause heart attacks. Cut the fat, save your heart. This message shaped half a century of dietary guidelines, food labeling, and public health campaigns.</p>
-        <p>The problem is that this chain of logic has serious gaps - gaps that modern research is beginning to expose. A landmark 2015 meta-analysis examined data from 72 individual studies and found no significant difference in cardiovascular disease risk between people with high and low saturated fat intake (Chowdhury et al.). The follow-up question that most researchers failed to ask was a crucial one: what were people eating <em>instead of</em> fat?</p>
-        <p>The answer, for most of the 20th century, was refined carbohydrates. As fat was removed from processed food, sugar and processed grains were added to compensate for flavor and texture. The resulting modern diet - high in both fat <em>and</em> carbohydrates simultaneously - may be the actual metabolic disaster that decades of science had been measuring all along. Saturated fat, consumed in an otherwise low-carbohydrate metabolic environment, tells a very different story than saturated fat consumed alongside a bun, fries, and a large soda.</p>
-        <p>This composition argues three points: saturated fat is not inherently dangerous; LDL cholesterol is not the primary engine of heart disease; and the real culprit is chronic inflammation triggered by insulin resistance - a condition produced not by dietary fat, but by chronically elevated blood sugar from excess refined carbohydrate consumption.</p>
+    <!-- ─── 03 Introduction ─── -->
+    <section class="section reveal" id="intro" data-screen-label="03 Introduction">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>03</span></div>
+        <span class="section__kicker">Introduction</span>
+        <h2 class="section__title">Fifty years of blaming the <em>wrong food</em></h2>
+        <p class="section__standfirst">A landmark 2015 meta-analysis examined data from 72 studies and found no significant difference in cardiovascular risk between people with high and low saturated fat intake. The follow-up question went unasked: what were people eating <em>instead?</em></p>
+      </header>
 
-        <div class="pullquote">
-          <p>"LDL is not the enemy unless it becomes oxidized. The real trigger is damage to the endothelium that allows oxidized LDL to enter."</p>
-          <cite>- Dr. Paul Mason, Sports and Exercise Medicine Physician (as cited in QuickLab Mobile, 2024)</cite>
+      <div class="intro-grid">
+        <div class="prose">
+          <p class="first-of-section">Since the 1970s, Americans have been told that saturated fat — found in butter, red meat, eggs, and cheese — is a primary cause of heart disease. The logic seemed airtight: saturated fat raises LDL cholesterol, high LDL clogs arteries, clogged arteries cause heart attacks. Cut the fat, save your heart. This message shaped half a century of dietary guidelines, food labeling, and public health campaigns.</p>
+          <p>The problem is that this chain of logic has serious gaps — gaps that modern research is beginning to expose. A landmark 2015 meta-analysis examined data from 72 individual studies and found no significant difference in cardiovascular disease risk between people with high and low saturated fat intake <sup class="cite"><a href="#cit-2">02</a></sup>. The follow-up question that most researchers failed to ask was a crucial one: what were people eating <em>instead of</em> fat?</p>
+          <p>The answer, for most of the 20th century, was refined carbohydrates. As fat was removed from processed food, sugar and processed grains were added to compensate for flavor and texture. The resulting modern diet — high in both fat <em>and</em> carbohydrates simultaneously — may be the actual metabolic disaster that decades of science had been measuring all along. Saturated fat, consumed in an otherwise low-carbohydrate metabolic environment, tells a very different story than saturated fat consumed alongside a bun, fries, and a large soda.</p>
+          <p>This composition argues three points: <strong>saturated fat is not inherently dangerous; LDL cholesterol is not the primary engine of heart disease; and the real culprit is chronic inflammation</strong> triggered by insulin resistance — a condition produced not by dietary fat, but by chronically elevated blood sugar from excess refined carbohydrate consumption.</p>
+
+          <blockquote class="pull">
+            <p class="pull__text">LDL is not the enemy unless it becomes oxidized. The real trigger is damage to the endothelium that allows oxidized LDL to enter.</p>
+            <cite class="pull__cite">Dr. Paul Mason, Sports &amp; Exercise Medicine Physician<sup class="cite"><a href="#cit-6">06</a></sup></cite>
+          </blockquote>
+        </div>
+
+        <aside class="aside">
+          <div class="callout">
+            <div class="callout__kicker"><span class="num">I.</span><span>Research Question</span></div>
+            <p>Is saturated fat dangerous on its own — or does the danger only emerge when combined with high carbohydrate intake and the insulin resistance that chronic sugar consumption creates?</p>
+          </div>
+
+          <div class="callout">
+            <div class="callout__kicker"><span class="num">II.</span><span>Key Biomarkers</span></div>
+            <h4 class="callout__title">The vocabulary of risk</h4>
+            <div class="stat-list">
+              <div class="stat-list__row"><span class="stat-list__key">LDL-C</span><span class="stat-list__val">“Bad” cholesterol particle</span></div>
+              <div class="stat-list__row"><span class="stat-list__key">HDL-C</span><span class="stat-list__val">“Good” cholesterol particle</span></div>
+              <div class="stat-list__row"><span class="stat-list__key">Triglycerides</span><span class="stat-list__val">Blood fats from carb excess</span></div>
+              <div class="stat-list__row"><span class="stat-list__key">CAC Score</span><span class="stat-list__val">Plaque inside coronary arteries</span></div>
+              <div class="stat-list__row"><span class="stat-list__key">hsCRP</span><span class="stat-list__val">Systemic inflammation marker</span></div>
+              <div class="stat-list__row"><span class="stat-list__key">HbA1c</span><span class="stat-list__val">3-month blood sugar avg.</span></div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout__kicker"><span class="num">III.</span><span>The Key Distinction</span></div>
+            <p><strong>Fat alone</strong> (ketogenic diet) → no insulin spike → fat burned for fuel → no chronic inflammation → arteries remain intact.</p>
+            <p><strong>Fat + carbs together</strong> (burger, bun, fries, soda) → blood sugar spikes → insulin spikes → insulin resistance → chronic inflammation → arterial damage → plaque.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ─── 04 Mechanism ─── -->
+    <section class="section reveal" id="mechanism" data-screen-label="04 Mechanism">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>04</span></div>
+        <span class="section__kicker">The Real Mechanism</span>
+        <h2 class="section__title">How heart disease actually begins: <em>inflammation</em>, not fat</h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">The traditional model says: saturated fat → high LDL → plaque in arteries → heart attack. But peer-reviewed research describes a more precise and more alarming sequence. Atherosclerosis — the buildup of plaque inside arteries — does not begin with cholesterol in the bloodstream. It begins with <strong>damage to the arterial wall itself</strong>, specifically to the endothelium: the fragile single-cell lining of every artery in the human body. Without that prior damage, LDL has no entry point and plaque cannot form<sup class="cite"><a href="#cit-4">04</a></sup>.</p>
+        <p>That endothelial damage is driven primarily by chronic inflammation. A 2023 NIH/PMC review confirms that cardiovascular disease has an "immunoinflammatory background," with macrophages — white blood cells recruited by inflammation — as the central actors in plaque formation<sup class="cite"><a href="#cit-5">05</a></sup>. Critically, the root cause of that chronic inflammation is <strong>insulin resistance</strong>: the metabolic breakdown that results from chronically elevated blood sugar. When cells stop responding to insulin, the body compensates by producing more of it, creating a state of hyperinsulinemia that reduces nitric oxide production in arterial walls, enables pro-inflammatory cytokines like TNF-α and IL-1β to attack the endothelium, and creates the conditions in which even ordinary LDL particles become oxidized and dangerous<sup class="cite"><a href="#cit-1">01</a></sup>.</p>
+      </div>
+    </section>
+
+    <!-- mechanism chain — pull full bleed -->
+    <div class="mech">
+      <div class="mech__inner">
+        <div class="mech__head">
+          <div class="mech__kicker">Figure 1 · The Atherosclerosis Cascade</div>
+          <h3 class="mech__title">From diet to disease: the real biological chain</h3>
+          <p class="mech__sub">Each step is supported by peer-reviewed evidence. Inflammation — not fat — is the trigger.</p>
+        </div>
+
+        <div class="chain">
+          <div class="node" data-locked="true" data-step="1">
+            <span class="node__num">Step 01</span>
+            <h4 class="node__title">High-Carb &amp; Fat Diet</h4>
+            <p class="node__body">The modern Western diet combines both macronutrients at every meal.</p>
+            <div class="tap-hint"><span class="pill">Tap to reveal</span></div>
+          </div>
+          <div class="node" data-locked="true" data-step="2">
+            <span class="node__num">Step 02</span>
+            <h4 class="node__title">Chronic Insulin Spikes</h4>
+            <p class="node__body">Repeated blood-sugar surges force the pancreas to overproduce insulin.</p>
+            <div class="tap-hint"><span class="pill">Tap to reveal</span></div>
+          </div>
+          <div class="node" data-locked="true" data-step="3">
+            <span class="node__num">Step 03</span>
+            <h4 class="node__title">Insulin Resistance</h4>
+            <p class="node__body">Cells stop responding; blood sugar and insulin remain chronically elevated.</p>
+            <div class="tap-hint"><span class="pill">Tap to reveal</span></div>
+          </div>
+          <div class="node" data-locked="true" data-step="4">
+            <span class="node__num">Step 04</span>
+            <h4 class="node__title">Chronic Inflammation</h4>
+            <p class="node__body">TNF-α and IL-1β flood the bloodstream; nitric oxide in arteries drops.</p>
+            <div class="tap-hint"><span class="pill">Tap to reveal</span></div>
+          </div>
+          <div class="node" data-locked="true" data-step="5">
+            <span class="node__num">Step 05</span>
+            <h4 class="node__title">Endothelial Damage</h4>
+            <p class="node__body">Arterial wall integrity breaks down; LDL enters, oxidizes, foam cells form.</p>
+            <div class="tap-hint"><span class="pill">Tap to reveal</span></div>
+          </div>
+          <div class="node node--final" data-locked="true" data-step="6">
+            <span class="node__num">Step 06</span>
+            <h4 class="node__title">Atherosclerosis</h4>
+            <p class="node__body">Plaque accumulates inside damaged arterial walls. Heart disease has begun.</p>
+            <div class="tap-hint"><span class="pill">Tap to reveal</span></div>
+          </div>
+        </div>
+
+        <p class="mech__caption">
+          <strong>Figure 1.</strong> The biological pathway from diet to cardiovascular disease, emphasizing insulin resistance and chronic inflammation as primary drivers. Adapted from MDPI Biomedicines (2025) and AHA Journals Circulation (2006). Diagram by author.
+        </p>
+      </div>
+    </div>
+
+    <section class="section reveal">
+      <div class="prose">
+        <p>One of the most powerful pieces of evidence for this inflammation-first model comes from the 2017 CANTOS Trial. Researchers gave heart disease patients canakinumab — a drug that specifically targets the inflammatory protein IL-1β — with <em>absolutely no effect on cholesterol levels</em>. The result was a statistically significant reduction in cardiovascular events. Inflammation alone, completely independent of LDL, reduced heart attacks and strokes<sup class="cite"><a href="#cit-11">11</a></sup>. If LDL were truly the primary driver, a drug that ignores LDL entirely should have had no cardiovascular benefit. It did. The inflammation model accounts for this; the lipid hypothesis cannot.</p>
+      </div>
+    </section>
+
+    <!-- ─── 05 LMHR ─── -->
+    <section class="section reveal" id="lmhr" data-screen-label="05 LMHR">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>05</span></div>
+        <span class="section__kicker">The Human Evidence</span>
+        <h2 class="section__title">Lean mass hyper-responders: the natural experiment that <em>changes everything</em></h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">If LDL cholesterol were truly the primary engine of heart disease, then people with astronomically high LDL levels should show rapid, severe plaque buildup in their arteries. A remarkable population of people — known as Lean Mass Hyper-Responders, or LMHRs — provides a natural experiment that tests this assumption directly in living human beings.</p>
+        <p>LMHRs are individuals who adopt a low-carbohydrate or ketogenic diet and experience dramatic rises in LDL cholesterol — often reaching levels two to three times what guidelines consider acceptable. At the same time, they are lean, metabolically healthy, with high HDL, very low triglycerides, no insulin resistance, low blood pressure, and low inflammatory markers. In short, they carry the worst LDL numbers in the room while simultaneously having the best metabolic health profile of almost anyone. If LDL alone causes heart disease, their arteries should be catastrophically damaged. What does the evidence actually show?</p>
+        <p>The KETO Trial (Budoff, 2024) and the KETO-CTA study (Soto-Mota, 2025) examined exactly this question. The KETO-CTA study enrolled 100 rigorously selected LMHRs — lean, non-diabetic, non-hypertensive — and measured their Coronary Artery Calcium (CAC) scores, which directly quantify calcified plaque inside coronary arteries. The results challenged the lipid hypothesis in a fundamental way:</p>
+      </div>
+
+      <div class="bignums">
+        <div class="bignums__cell" data-locked="true" data-target="54">
+          <div class="bignums__num">54<span class="unit">%</span></div>
+          <p class="bignums__label">CAC = Zero</p>
+          <p class="bignums__desc">of LMHR participants had a Coronary Artery Calcium score of zero — no calcified plaque — despite years on a high-fat ketogenic diet.</p>
+        </div>
+        <div class="bignums__cell" data-locked="true" data-target="81">
+          <div class="bignums__num">81<span class="unit">%</span></div>
+          <p class="bignums__label">Clinically Low Risk</p>
+          <p class="bignums__desc">had a CAC score below 100 — clinically low-risk — despite LDL levels of 200–308 mg/dL.</p>
+        </div>
+        <div class="bignums__cell" data-locked="true" data-target="0">
+          <div class="bignums__num">0<span class="unit">predictive</span></div>
+          <p class="bignums__label">ApoB &amp; LDL</p>
+          <p class="bignums__desc">predictive power. LDL and ApoB did not predict plaque progression. "Plaque predicts plaque — not ApoB."</p>
+        </div>
+        <div class="bignums__cell" data-locked="true" data-target="308">
+          <div class="bignums__num">200<span class="unit">–308</span></div>
+          <p class="bignums__label">LDL-C Range, mg/dL</p>
+          <p class="bignums__desc">far above guidelines — yet over half of participants showed no detectable plaque at all.</p>
         </div>
       </div>
 
-      <aside class="sidebar">
-        <div class="info-box">
-          <h4>🔬 Research Question</h4>
-          <p>Is saturated fat dangerous on its own - or does the danger only emerge when combined with high carbohydrate intake and the insulin resistance that chronic sugar consumption creates?</p>
+      <div class="compare-cards">
+        <div class="compare-cards__cell compare-cards__cell--accent">
+          <span class="compare-cards__h">What the evidence shows</span>
+          <h4 class="compare-cards__t">In metabolically healthy individuals, extreme LDL did not predict plaque</h4>
+          <p>In LMHRs with low insulin, very low triglycerides, low hsCRP, and high HDL, extremely elevated LDL did not predict plaque growth. The strongest predictor of whether plaque progressed was whether it already existed at baseline — not LDL levels. A 2025 literature review in <em>Quality in Sport</em> confirmed these findings: after follow-up, 81% of participants maintained low-risk plaque burden despite sky-high LDL, and in those with CAC = 0 at the start, only modest progression was seen. Crucially, that progression was not linked to LDL or ApoB at all<sup class="cite"><a href="#cit-8">08</a></sup><sup class="cite"><a href="#cit-12">12</a></sup>.</p>
         </div>
-        <div class="info-box">
-          <h4>📊 Key Biomarkers to Know</h4>
-          <div class="stat-row"><span>LDL-C</span><strong>"Bad" cholesterol particle</strong></div>
-          <div class="stat-row"><span>HDL-C</span><strong>"Good" cholesterol particle</strong></div>
-          <div class="stat-row"><span>Triglycerides</span><strong>Blood fats produced from carb excess</strong></div>
-          <div class="stat-row"><span>CAC Score</span><strong>Coronary Artery Calcium - actual plaque in arteries</strong></div>
-          <div class="stat-row"><span>hsCRP</span><strong>C-Reactive Protein - inflammation marker</strong></div>
-          <div class="stat-row"><span>HbA1c</span><strong>Average blood sugar over 3 months</strong></div>
-        </div>
-        <div class="info-box">
-          <h4>💡 The Key Distinction</h4>
-          <p><strong>Fat alone</strong> (e.g., ketogenic diet) → no insulin spike → fat burned for fuel → no chronic inflammation → arteries remain intact.</p>
-          <p><strong>Fat + carbs together</strong> (e.g., cheeseburger, bun, fries, soda) → blood sugar spikes → insulin spikes → insulin resistance develops → chronic inflammation begins → arterial wall damage → plaque.</p>
-        </div>
-      </aside>
-    </div>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="mechanism">
-    <span class="label">The Real Mechanism</span>
-    <h2>How Heart Disease Actually Begins: Inflammation, Not Fat</h2>
-    <p>The traditional model says: saturated fat → high LDL → plaque in arteries → heart attack. But peer-reviewed research describes a more precise and more alarming sequence. Atherosclerosis - the buildup of plaque inside arteries - does not begin with cholesterol in the bloodstream. It begins with <strong>damage to the arterial wall itself</strong>, specifically to the endothelium: the fragile single-cell lining of every artery in the human body. Without that prior damage, LDL has no entry point and plaque cannot form (MDPI Biomedicines, 2025).</p>
-    <p>That endothelial damage is driven primarily by chronic inflammation. A 2023 NIH/PMC review confirms that cardiovascular disease has an "immunoinflammatory background," with macrophages - white blood cells recruited by inflammation - as the central actors in plaque formation. Critically, the root cause of that chronic inflammation is <strong>insulin resistance</strong>: the metabolic breakdown that results from chronically elevated blood sugar. When cells stop responding to insulin, the body compensates by producing more of it, creating a state of hyperinsulinemia that reduces nitric oxide production in arterial walls, enables pro-inflammatory cytokines like TNF-α and IL-1β to attack the endothelium, and creates the conditions in which even ordinary LDL particles become oxidized and dangerous (AHA Journals, 2006; MDPI, 2025).</p>
-
-    <div class="mechanism">
-      <span class="label" style="text-align:center;display:block;color:var(--gold);">The Atherosclerosis Cascade</span>
-      <h2>From Diet to Disease: The Real Biological Chain</h2>
-      <p class="sub">Each step is supported by peer-reviewed evidence. Inflammation - not fat - is the trigger.</p>
-      <div class="chain">
-        <div class="chain-node">
-          <div class="icon">🍔🍟</div>
-          <h4>High Carb + Fat Diet</h4>
-          <p>The modern Western diet combines both macronutrients at every meal</p>
-        </div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node">
-          <div class="icon">📈</div>
-          <h4>Chronic Insulin Spikes</h4>
-          <p>Repeated blood sugar surges force the pancreas to overproduce insulin</p>
-        </div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node">
-          <div class="icon">⚡</div>
-          <h4>Insulin Resistance</h4>
-          <p>Cells stop responding; blood sugar and insulin remain chronically elevated</p>
-        </div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node">
-          <div class="icon">🔥</div>
-          <h4>Chronic Inflammation</h4>
-          <p>TNF-α and IL-1β flood the bloodstream; nitric oxide in arteries drops</p>
-        </div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node">
-          <div class="icon">🩸</div>
-          <h4>Endothelial Damage</h4>
-          <p>Arterial wall integrity breaks down; LDL enters, oxidizes, foam cells form</p>
-        </div>
-        <div class="chain-arrow">→</div>
-        <div class="chain-node" style="border-color:var(--red); background:rgba(155,35,53,.3);">
-          <div class="icon">❤️‍🩹</div>
-          <h4>Atherosclerosis</h4>
-          <p>Plaque accumulates inside damaged arterial walls - heart disease has begun</p>
+        <div class="compare-cards__cell">
+          <span class="compare-cards__h">A real-world case</span>
+          <h4 class="compare-cards__t">A 64-year-old woman, LDL 381 mg/dL, six years on keto, zero plaque</h4>
+          <p>A 2025 case report published directly in the <em>Journal of the American College of Cardiology</em> describes a 64-year-old LMHR woman who adopted a strict ketogenic diet in 2019. Her LDL rose from 120 mg/dL to 381 mg/dL — more than tripling. She declined medication. Coronary Artery Calcium scans were performed in both 2018 and 2024. Both showed a CAC score of <strong>zero</strong>. No plaque. No progression. Six years of massive LDL elevation in the context of excellent metabolic health and zero systemic inflammation produced no arterial damage whatsoever<sup class="cite"><a href="#cit-3">03</a></sup>.</p>
         </div>
       </div>
-      <p class="caption">Figure 1. The biological pathway from diet to cardiovascular disease, emphasizing insulin resistance and chronic inflammation as primary drivers. Adapted from MDPI Biomedicines (2025) and AHA Journals Circulation (2006). (Diagram by author)</p>
+
+      <div class="prose" style="margin-top:36px;">
+        <blockquote class="pull">
+          <p class="pull__text">Crucially, ApoB and LDL-C levels did not predict plaque growth. Baseline plaque burden was the strongest predictor — those who already had some plaque were the ones who progressed.</p>
+          <cite class="pull__cite">Soto-Mota et al., KETO-CTA Trial, JACC Advances, 2025<sup class="cite"><a href="#cit-12">12</a></sup></cite>
+        </blockquote>
+        <p>The phrase emerging from this research — <em>"plaque predicts plaque, ApoB does not"</em> — directly challenges the assumption that LDL drives atherosclerosis in metabolically healthy individuals. It suggests instead that the key variable is the inflammatory state of the arterial environment, not the volume of LDL particles in the blood. When the endothelium is intact and inflammation is absent, even massive amounts of LDL appear to circulate harmlessly.</p>
+      </div>
+    </section>
+
+    <!-- ─── 06 LDL ─── -->
+    <section class="section reveal" id="ldl" data-screen-label="06 LDL Myth">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>06</span></div>
+        <span class="section__kicker">Rethinking Cholesterol</span>
+        <h2 class="section__title">LDL is not the enemy — oxidized LDL in a <em>damaged artery</em> is</h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">Cholesterol, including LDL cholesterol, is not a toxin. It is an essential biological molecule that the human body synthesizes and depends upon for hormone production, brain function, cell membrane integrity, and tissue repair. The body produces approximately 75% of all circulating cholesterol independently of dietary intake — when we eat less saturated fat, the liver simply compensates by manufacturing more. This is why dietary changes alone often produce only modest effects on total cholesterol levels.</p>
+        <p>The critical distinction that decades of dietary guidelines failed to communicate is the difference between native LDL and <em>oxidized</em> LDL. Native LDL, circulating in a healthy arterial environment with an intact endothelium, does not cause plaque. It is only when the endothelial wall has been damaged by chronic inflammation — cracked open by the conditions created by insulin resistance — that LDL particles infiltrate the arterial wall. Once inside, they become oxidized by reactive oxygen species. White blood cells (macrophages) then engulf those oxidized LDL particles, transform into "foam cells," and accumulate as fatty streaks: the earliest visible stage of atherosclerosis<sup class="cite"><a href="#cit-4">04</a></sup><sup class="cite"><a href="#cit-5">05</a></sup>.</p>
+        <p>In this model, LDL is not the arsonist — it is closer to a bystander that gets trapped inside a burning building. The fire was lit by insulin resistance and chronic inflammation. The table below contrasts the two models:</p>
+      </div>
+
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Factor</th>
+            <th>Traditional Lipid Hypothesis</th>
+            <th>Inflammation / Insulin Resistance Model</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary cause of plaque</td>
+            <td><span class="bad">High LDL-C circulating in the blood</span></td>
+            <td><span class="good">Endothelial damage from chronic inflammation allowing oxidized LDL entry</span></td>
+          </tr>
+          <tr>
+            <td>Role of saturated fat</td>
+            <td><span class="bad">Raises LDL → directly causes heart disease</span></td>
+            <td><span class="good">Raises LDL, but benign without the inflammatory environment created by insulin resistance</span></td>
+          </tr>
+          <tr>
+            <td>Root dietary cause</td>
+            <td><span class="bad">Too much dietary fat</span></td>
+            <td><span class="good">Too many refined carbohydrates → chronic blood sugar elevation → insulin resistance → inflammation</span></td>
+          </tr>
+          <tr>
+            <td>Best cardiovascular biomarkers</td>
+            <td><span class="bad">Total LDL-C, Total Cholesterol</span></td>
+            <td><span class="good">Triglyceride : HDL ratio, hsCRP, HbA1c, fasting insulin, CAC score</span></td>
+          </tr>
+          <tr>
+            <td>CANTOS Trial (2017)</td>
+            <td><span class="bad">Cannot explain: anti-inflammatory drug reduced CVD events with zero LDL change</span></td>
+            <td><span class="good">Directly supports: reducing IL-1β inflammation alone reduced cardiovascular events — independent of cholesterol</span></td>
+          </tr>
+          <tr>
+            <td>LMHR evidence (2024–25)</td>
+            <td><span class="bad">Cannot explain: LDL of 300+ mg/dL with CAC = 0 and no plaque progression</span></td>
+            <td><span class="good">Fully consistent: no inflammation and no insulin resistance means LDL cannot damage intact arteries</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="fig-caption"><strong>Table 1.</strong> Comparison of the traditional lipid hypothesis versus the inflammation and insulin resistance model of atherosclerosis. Table by author.</p>
+    </section>
+
+    <!-- ─── 07 Video ─── -->
+    <section class="section reveal" id="video" data-screen-label="07 Expert Video">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>07</span></div>
+        <span class="section__kicker">Expert Perspective</span>
+        <h2 class="section__title">Walking through the <em>low-carb lipid triad</em></h2>
+      </header>
+      <div class="video">
+        <div class="video__head">
+          <div class="video__kicker">Embedded Video · 11 min · YouTube</div>
+          <h3 class="video__title">"No more myths: saturated fat &amp; the keto diet"</h3>
+          <p class="video__lead">This video directly addresses the most common misconceptions about saturated fat, walking through the low-carb lipid "triad" of high LDL, high HDL, and low triglycerides, and explaining why LDL cholesterol in the context of a ketogenic diet does not behave the same way as LDL in a high-carbohydrate metabolic environment. It covers the inverse association between BMI and LDL on low-carb diets — a key aspect of the Lean Mass Hyper-Responder phenotype — and explains why applying standard cardiovascular risk models to metabolically healthy, low-carb individuals produces misleading conclusions.</p>
+        </div>
+        <div class="video__wrap">
+          <iframe
+            src="https://www.youtube.com/embed/Ee5A3_WIh4U?start=1"
+            title="Saturated Fat and Heart Disease — Expert Discussion"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"></iframe>
+        </div>
+        <p class="video__caption"><strong>Source.</strong> "No More Myths. Saturated Fat and Keto Diet." YouTube, 31 Jan. 2024, www.youtube.com/watch?v=Ee5A3_WIh4U.</p>
+      </div>
+    </section>
+
+    <!-- ─── 08 Data ─── -->
+    <section class="section reveal" id="data" data-screen-label="08 Data">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>08</span></div>
+        <span class="section__kicker">The Data</span>
+        <h2 class="section__title">Where the real metabolic <em>risk lives</em></h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">If saturated fat alone were the primary driver of cardiovascular disease, LDL cholesterol should be the dominant predictor of heart attack risk across all populations. But large population studies and clinical trials increasingly show that the most powerful predictors of cardiovascular events are markers of metabolic dysfunction and systemic inflammation — not LDL cholesterol in isolation. The chart below illustrates the relative cardiovascular risk associated with major risk factors, synthesized from the CANTOS trial, MDPI Biomedicines (2025), and the KETO-CTA trial data (Soto-Mota, 2025).</p>
+      </div>
+
+      <div class="chart">
+        <div class="chart__head">
+          <h3 class="chart__title">Relative cardiovascular risk by factor</h3>
+          <div class="chart__legend">
+            <span><i style="background:var(--rust);"></i>High</span>
+            <span><i style="background:var(--gold);"></i>Moderate</span>
+            <span><i style="background:var(--teal);"></i>Low / context-dep.</span>
+          </div>
+        </div>
+
+        <div class="chart__row" style="--w:88%;">
+          <span class="chart__label">Insulin Resistance / Type 2 Diabetes</span>
+          <div class="chart__track"><div class="chart__bar chart__bar--rust">2–4× increased risk</div></div>
+          <span class="chart__pct">Very High</span>
+        </div>
+        <div class="chart__row" style="--w:74%;">
+          <span class="chart__label">Chronic Inflammation (high hsCRP)</span>
+          <div class="chart__track"><div class="chart__bar chart__bar--rust">Strong independent predictor</div></div>
+          <span class="chart__pct">High</span>
+        </div>
+        <div class="chart__row" style="--w:62%;">
+          <span class="chart__label">High Triglycerides / Low HDL</span>
+          <div class="chart__track"><div class="chart__bar chart__bar--gold">Atherogenic dyslipidemia</div></div>
+          <span class="chart__pct">High</span>
+        </div>
+        <div class="chart__row" style="--w:56%;">
+          <span class="chart__label">Existing CAC Score &gt; 100</span>
+          <div class="chart__track"><div class="chart__bar chart__bar--gold">Strongest plaque progression signal</div></div>
+          <span class="chart__pct">High</span>
+        </div>
+        <div class="chart__row" style="--w:28%;">
+          <span class="chart__label">Elevated LDL-C, isolated</span>
+          <div class="chart__track"><div class="chart__bar chart__bar--teal">Context-dependent</div></div>
+          <span class="chart__pct">Moderate</span>
+        </div>
+        <div class="chart__row" style="--w:11%;">
+          <span class="chart__label">Elevated LDL in healthy LMHR</span>
+          <div class="chart__track"><div class="chart__bar chart__bar--teal">Unclear · low</div></div>
+          <span class="chart__pct">Low?</span>
+        </div>
+
+        <p class="chart__note"><strong>Figure 2.</strong> Relative cardiovascular risk contribution by factor, synthesized from CANTOS trial (2017), MDPI Biomedicines (2025), AHA Journals, and KETO-CTA (Soto-Mota, 2025). Risk levels are qualitative summaries for illustrative purposes. Chart by author.</p>
+      </div>
+    </section>
+
+    <!-- ─── 09 Case Study ─── -->
+    <section class="section reveal" id="case-study" data-screen-label="09 Case Study">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>09</span></div>
+        <span class="section__kicker">Case Study</span>
+        <h2 class="section__title">The 64-year-old woman with LDL <em>of 381</em> &amp; zero plaque</h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">One of the most striking real-world examples of the LMHR phenomenon was published as a case report in the <em>Journal of the American College of Cardiology</em> in 2025. A 64-year-old woman with no prior cardiovascular disease and no family history of early atherosclerosis adopted a strict ketogenic diet in 2019. Within a few years, her total cholesterol rose from approximately 200 mg/dL to 487 mg/dL, and her LDL climbed from 120 mg/dL to 381 mg/dL — more than tripling. Under standard lipid guidelines, she would be classified as extremely high-risk and immediately prescribed cholesterol-lowering medication.</p>
+        <p>She declined medication through shared decision-making with her physician. Crucially, her other metabolic markers told a completely different story: her triglycerides were very low, her HDL was high, her high-sensitivity CRP (inflammation marker) was normal, her HbA1c (blood sugar marker) was normal, and her kidney and liver function were all healthy. She had two Coronary Artery Calcium scans performed — one in 2018 and one in 2024. Both returned a score of zero. No calcified plaque. No arterial damage. Six years of LDL levels that would terrify most cardiologists produced no measurable plaque whatsoever<sup class="cite"><a href="#cit-3">03</a></sup>.</p>
+        <p>This case does not prove that high LDL is always safe. But it illustrates powerfully that LDL in the absence of insulin resistance and systemic inflammation behaves very differently than LDL in a metabolically compromised body. The woman's metabolic environment — low inflammation, low insulin, excellent blood sugar control — appears to have prevented the endothelial damage that would have allowed LDL to become dangerous in the first place.</p>
+      </div>
+    </section>
+
+    <!-- ─── 10 Key Terms ─── -->
+    <section class="section reveal" id="key-terms" data-screen-label="10 Key Terms">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>10</span></div>
+        <span class="section__kicker">Key Terms</span>
+        <h2 class="section__title">The vocabulary of <em>this debate</em></h2>
+      </header>
+
+      <div class="cards">
+        <div class="card">
+          <span class="card__num">Term 01</span>
+          <h4 class="card__title">Endothelium</h4>
+          <p>The single-cell layer lining the inside of every artery in the human body. When intact, it acts as a barrier that keeps LDL cholesterol out of the arterial wall. When damaged by chronic inflammation, it allows LDL to enter, oxidize, and begin forming plaque. Endothelial health — not cholesterol levels — is the key variable in whether atherosclerosis begins.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Term 02</span>
+          <h4 class="card__title">Insulin Resistance</h4>
+          <p>A metabolic condition in which the body's cells stop responding normally to insulin, leaving blood sugar chronically elevated. The body compensates by producing more insulin, creating a state of hyperinsulinemia that promotes inflammation, damages the endothelium, and drives plaque formation. Insulin resistance is the foundational condition underlying Type 2 diabetes and is considered a primary driver of cardiovascular disease.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Term 03</span>
+          <h4 class="card__title">Coronary Artery Calcium (CAC) Score</h4>
+          <p>A measurement obtained via CT scan that directly quantifies the amount of calcified plaque inside the coronary arteries. A CAC score of zero means no calcified plaque is detectable. Unlike LDL cholesterol — which is a blood measurement — the CAC score tells you what is actually happening inside the arteries themselves. It is considered a much more direct indicator of cardiovascular risk than LDL alone.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Term 04</span>
+          <h4 class="card__title">Lean Mass Hyper-Responder (LMHR)</h4>
+          <p>A phenotype first identified by researcher Dave Feldman, describing lean, metabolically healthy individuals who experience dramatic LDL increases when adopting a low-carbohydrate or ketogenic diet. LMHRs simultaneously show very high HDL and very low triglycerides — the opposite of the dangerous "atherogenic dyslipidemia" pattern. Their existence challenges the idea that high LDL is always a cardiac risk signal.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Term 05</span>
+          <h4 class="card__title">Oxidized LDL</h4>
+          <p>The dangerous form of LDL cholesterol. Native LDL circulating in the bloodstream is not inherently harmful. It becomes dangerous only when it enters a damaged arterial wall and is exposed to reactive oxygen species, which oxidize it. White blood cells then engulf oxidized LDL, forming foam cells — the building block of arterial plaque. Chronic inflammation creates the conditions for LDL oxidation; without endothelial damage, this process does not begin.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Term 06</span>
+          <h4 class="card__title">hsCRP (High-Sensitivity C-Reactive Protein)</h4>
+          <p>A blood marker that reflects the level of systemic inflammation in the body. Elevated hsCRP is associated with increased cardiovascular risk independently of LDL cholesterol. The CANTOS trial specifically enrolled patients with elevated hsCRP and demonstrated that reducing inflammation alone — without touching LDL — significantly reduced cardiovascular events. hsCRP is considered a more direct marker of cardiovascular risk than LDL in many metabolic contexts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 11 Stakeholders ─── -->
+    <section class="section reveal" id="stakeholders" data-screen-label="11 Stakeholders">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>11</span></div>
+        <span class="section__kicker">Key Stakeholders</span>
+        <h2 class="section__title">Who has a <em>stake</em> in this debate</h2>
+      </header>
+
+      <div class="cards">
+        <div class="card card--accent">
+          <span class="card__num">Stakeholder 01</span>
+          <h4 class="card__title">Patients With Metabolic Syndrome &amp; Type 2 Diabetes</h4>
+          <p>Approximately 38 million Americans have Type 2 diabetes and an estimated 96 million more are prediabetic, meaning they have insulin resistance to some degree. These patients are the highest-risk group for cardiovascular disease — not because of their LDL levels, but because of their chronic metabolic inflammation and endothelial damage. If the inflammation model is correct, the most important intervention for this group is carbohydrate reduction to restore insulin sensitivity, not simply LDL-lowering medication.</p>
+        </div>
+        <div class="card card--accent">
+          <span class="card__num">Stakeholder 02</span>
+          <h4 class="card__title">Physicians &amp; Cardiologists</h4>
+          <p>Doctors are trained to use LDL as the primary cardiovascular risk marker and to prescribe statins when it is elevated. If the evidence increasingly shows that LDL in metabolically healthy individuals is not a reliable risk predictor, physicians face a difficult question: are they overtreating some patients with medication while undertreating the underlying drivers of insulin resistance and inflammation? The LMHR research directly challenges standard clinical decision-making.</p>
+        </div>
+        <div class="card card--accent">
+          <span class="card__num">Stakeholder 03</span>
+          <h4 class="card__title">The Food &amp; Agricultural Industry</h4>
+          <p>For decades, the dietary guidelines that told Americans to eat less fat were enormously profitable for the processed food industry. Low-fat products replaced fat with refined sugars and carbohydrates. If the science now points toward excess carbohydrates as the primary driver of cardiovascular disease, the food industry faces major pressure to reformulate its products — and to reckon with decades of marketing built on the low-fat premise.</p>
+        </div>
+        <div class="card card--accent">
+          <span class="card__num">Stakeholder 04</span>
+          <h4 class="card__title">Government Health Agencies</h4>
+          <p>The USDA Dietary Guidelines for Americans, updated every five years, have long recommended limiting saturated fat to under 10% of daily calories. These guidelines influence what is served in school cafeterias, military meals, hospitals, and federally funded food assistance programs. If the science shifts away from the lipid hypothesis, government agencies face pressure to revise guidelines that have shaped the American diet for half a century — a politically complicated process, as seen in the ongoing 2025–2030 Dietary Guidelines debate.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 12 Interesting Fact ─── -->
+    <section class="section reveal" id="interesting-fact" data-screen-label="12 CANTOS">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>12</span></div>
+        <span class="section__kicker">A Striking Trial</span>
+        <h2 class="section__title">The drug that proved inflammation drives heart disease — <em>without touching cholesterol</em></h2>
+      </header>
+      <div class="prose">
+        <p class="first-of-section">One of the most remarkable findings in modern cardiology came from the 2017 CANTOS trial. Researchers enrolled 10,061 patients who had already suffered a heart attack and had persistently elevated levels of hsCRP — the inflammation marker — despite their cholesterol being managed. They were given either a placebo or canakinumab, a drug that specifically neutralizes the inflammatory protein IL-1 beta. The drug had no effect on LDL cholesterol whatsoever. None. Yet the group receiving the 150 mg dose experienced a statistically significant reduction in recurrent heart attacks, strokes, and cardiovascular deaths<sup class="cite"><a href="#cit-11">11</a></sup>.</p>
+        <p>I find this finding extraordinary because it essentially runs a controlled experiment that isolates inflammation from cholesterol. If LDL were the primary driver of cardiovascular events, a drug that only targets inflammation and does nothing to LDL should produce no cardiovascular benefit. Instead it produced a meaningful one. As the principal investigator Dr. Paul Ridker stated: <em>"We found that in high-risk patients, a drug that lowers inflammation but has no effect on cholesterol reduced the risk of major adverse cardiovascular events."</em> This is some of the most direct evidence available that the inflammatory model of heart disease is correct — and that the standard focus on LDL alone is incomplete.</p>
+      </div>
+    </section>
+
+    <!-- ─── 13 FAQ ─── -->
+    <section class="section reveal" id="faq" data-screen-label="13 FAQ">
+      <header class="section__head">
+        <div class="section__marker"><span class="glyph">§</span><span>13</span></div>
+        <span class="section__kicker">Questions Raised</span>
+        <h2 class="section__title">Anticipating <em>the objections</em></h2>
+      </header>
+      <div class="cards">
+        <div class="card">
+          <span class="card__num">Q 01</span>
+          <h4 class="card__title">Does this mean I can eat as much saturated fat as I want?</h4>
+          <p>Not exactly. The argument here is that saturated fat is not inherently dangerous — its risk is highly dependent on the metabolic context in which it is eaten. If you are consuming it alongside a diet high in refined carbohydrates and sugar, you are creating the conditions for insulin resistance and chronic inflammation, which is where the real danger lies. Saturated fat in a low-carbohydrate, whole-food diet appears to carry much lower risk. Eating unlimited butter on top of a bowl of pasta is a very different metabolic event than eating butter with eggs and vegetables.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Q 02</span>
+          <h4 class="card__title">If LDL is not the main problem, why do statins work?</h4>
+          <p>This is a fair question. Statins do reduce cardiovascular events, and they do lower LDL. However, statins also have significant anti-inflammatory effects independent of their cholesterol-lowering action. Several researchers, including Dr. Paul Ridker who led the CANTOS trial, have argued that a meaningful portion of statins' cardiovascular benefit comes from their anti-inflammatory properties rather than LDL reduction alone. This does not mean LDL is irrelevant in all situations — particularly in people with familial hypercholesterolemia — but it complicates the simple "lower LDL = lower risk" narrative.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Q 03</span>
+          <h4 class="card__title">Is a ketogenic diet safe for everyone?</h4>
+          <p>A ketogenic diet is not appropriate for everyone, and this composition does not recommend any specific diet. People with certain medical conditions, including those with familial hypercholesterolemia or pre-existing cardiovascular disease, should consult their physician before making major dietary changes. The LMHR evidence comes from a carefully selected group of lean, metabolically healthy individuals — findings from this group may not extend to all people on ketogenic diets, particularly those who are overweight or already metabolically compromised.</p>
+        </div>
+        <div class="card">
+          <span class="card__num">Q 04</span>
+          <h4 class="card__title">Has the scientific consensus on saturated fat actually shifted?</h4>
+          <p>The consensus is actively contested and evolving, which is a more accurate description than saying it has shifted. Traditional guidelines from the American Heart Association and the USDA still recommend limiting saturated fat. However, a growing number of researchers and clinicians argue that the evidence base for those guidelines is weaker than assumed, that the replacement of fat with refined carbohydrates was harmful, and that inflammation and insulin resistance are stronger cardiovascular predictors than LDL. The 2025–2030 Dietary Guidelines process is actively revisiting this question.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 14 Conclusion ─── -->
+    <section class="section reveal" id="conclusion" data-screen-label="14 Conclusion">
+      <div class="conclusion">
+        <div class="conclusion__inner">
+          <div class="conclusion__kicker">§ 14 · Conclusion</div>
+          <h2 class="conclusion__title">The enemy was never the fat. It was the <em style="color:var(--gold);font-style:italic;font-weight:500;">fire.</em></h2>
+          <p>For half a century, saturated fat has occupied the villain's role in the story of heart disease. But the evidence assembled here points toward a more accurate and more actionable conclusion: saturated fat, consumed in the absence of chronic carbohydrate overload, is not a meaningful driver of cardiovascular disease. The danger is not the fat. The danger is the metabolic fire — chronic inflammation, insulin resistance, and endothelial damage — that excess refined carbohydrate consumption ignites.</p>
+          <p>The Lean Mass Hyper-Responder research provides the most direct human evidence for this position. These individuals carry LDL levels that conventional medicine classifies as dangerously high. Yet the majority show CAC scores of zero — no plaque — after years on high-fat, low-carbohydrate diets. And crucially, it was not LDL levels that predicted who would develop plaque. It was whether plaque already existed — the marker of prior inflammatory damage to arterial walls <em>(Soto-Mota et al., 2025 — note: subsequently retracted due to methodology concerns, with the underlying LMHR data from the Mierzejewski et al. literature review remaining available)</em>. In the absence of that damage, high LDL appears to be far less dangerous than the last fifty years of dietary guidelines have led us to believe.</p>
+          <p>The CANTOS trial closed the argument from the other direction: when researchers chemically suppressed inflammation with no effect on cholesterol, cardiovascular events still fell significantly. Inflammation alone — entirely independent of LDL — drives heart disease. This reframes the entire dietary conversation. The question is not whether to choose butter or vegetable oil. The question is whether your body is in a state of chronic metabolic inflammation — a state driven overwhelmingly by excess refined carbohydrates, insulin resistance, and the hyperglycemia of Type 2 diabetes.</p>
+          <p>Saturated fat combined with chronically elevated blood sugar may well contribute to arterial damage. Saturated fat consumed in a metabolically healthy, low-carbohydrate context — based on the best current evidence — appears to be considerably less dangerous than we were told. The war on saturated fat was not merely misguided. It may have pointed an entire civilization toward the very refined carbohydrates that lit the inflammatory fuse all along.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Engagement bar -->
+<div class="engagement-bar" id="engBar">
+  <span>Engagement</span>
+  <div class="track"><div class="fill" id="engFill"></div></div>
+  <span class="count"><span id="engCount">0</span>/10</span>
+</div>
+
+<!-- ═══════════════════════════════ WORKS CITED ═══════════════════════════════ -->
+<section class="cited" id="works-cited" data-screen-label="15 Works Cited">
+  <div class="cited__inner">
+    <div class="cited__head">
+      <h2 class="cited__title">Works Cited</h2>
+      <span class="cited__meta">§ 15 · 12 Sources · MLA 9</span>
     </div>
+    <ol class="cited__list">
+      <li id="cit-1">Kim, Jeong-a, et al. "Reciprocal Relationships Between Insulin Resistance and Endothelial Dysfunction: Molecular and Pathophysiological Mechanisms." <em>Circulation</em>, vol. 113, no. 15, 18 Apr. 2006, pp. 1888–1904, doi:10.1161/CIRCULATIONAHA.105.563213.</li>
+      <li id="cit-2">Chowdhury, Rajiv, et al. "Association of Dietary, Circulating, and Supplement Fatty Acids with Coronary Risk: A Systematic Review and Meta-Analysis." <em>Annals of Internal Medicine</em>, vol. 160, no. 6, 18 Mar. 2014, pp. 398–406, doi:10.7326/M13-1788.</li>
+      <li id="cit-3">Garcia, David, et al. "Increasing Carbohydrate Intake to Reduce Cholesterol Levels: A Lean Mass Hyperresponder Case Report." <em>Journal of the American College of Cardiology</em>, vol. 85, no. 12 Supplement, Apr. 2025, p. 4030, doi:10.1016/S0735-1097(25)04514-0.</li>
+      <li id="cit-4">Brie, Alina Diduta, et al. "Atherosclerosis and Insulin Resistance: Is There a Link Between Them?" <em>Biomedicines</em>, vol. 13, no. 6, 23 May 2025, p. 1291, doi:10.3390/biomedicines13061291.</li>
+      <li id="cit-5">Kosmas, Constantine E., et al. "Insulin Resistance and Cardiovascular Disease." <em>Journal of Medicine</em>, vol. 51, no. 3, Mar. 2023, doi:10.1177/03000605231164548. PMC10069006.</li>
+      <li id="cit-6">Mason, Paul. "Rethinking Heart Disease: Atherosclerosis vs. the Lipid Hypothesis." <em>QuickLab Mobile</em>, 2024, quicklabmobile.com/post/rethinking-heart-disease-dr-paul-masons-take-on-atherosclerosis-vs-the-lipid-hypothesis.</li>
+      <li id="cit-7">Steyers, Curtis M., and Francis J. Miller. "Endothelial Dysfunction in Chronic Inflammatory Diseases." <em>International Journal of Molecular Sciences</em>, vol. 15, no. 7, 25 June 2014, pp. 11324–11349, doi:10.3390/ijms150711324. PMC4139785.</li>
+      <li id="cit-8">Mierzejewski, Jakub, Adam Rafałowicz, and Urszula Justyna Wojciechowska. "High LDL Cholesterol, Low Risk? Lean Mass Hyper-responder Phenotype — A Literature Review." <em>Quality in Sport</em>, vol. 43, 4 July 2025, p. 61260, doi:10.12775/QS.2025.43.61260.</li>
+      <li id="cit-9">"No More Myths. Saturated Fat and Keto Diet." <em>YouTube</em>, 31 Jan. 2024, www.youtube.com/watch?v=Ee5A3_WIh4U.</li>
+      <li id="cit-10">Optimal Wellness MD. "Atherosclerosis: Is It Due to Lipids, Insulin, or Inflammation?" <em>Optimal Wellness MD Blog</em>, 26 Mar. 2025, www.optimalwellnessmd.com/blog/uncategorized/atherosclerosis-is-it-due-to-lipids-insulin-or-inflammation.</li>
+      <li id="cit-11">Ridker, Paul M., et al. "Antiinflammatory Therapy with Canakinumab for Atherosclerotic Disease." <em>New England Journal of Medicine</em>, vol. 377, 27 Aug. 2017, pp. 1119–1131, doi:10.1056/NEJMoa1707914.</li>
+      <li id="cit-12">Soto-Mota, Adrian, et al. "Plaque Begets Plaque, ApoB Does Not: Longitudinal Data from the KETO-CTA Trial." <em>JACC: Advances</em>, vol. 4, no. 7, July 2025, p. 101686, doi:10.1016/j.jacadv.2025.101686. <strong>Retracted March 2026</strong> by the authors and editors following concerns about methodology.</li>
+    </ol>
+  </div>
+</section>
 
-    <p>One of the most powerful pieces of evidence for this inflammation-first model comes from the 2017 CANTOS Trial. Researchers gave heart disease patients canakinumab - a drug that specifically targets the inflammatory protein IL-1β - with <em>absolutely no effect on cholesterol levels</em>. The result was a statistically significant reduction in cardiovascular events. Inflammation alone, completely independent of LDL, reduced heart attacks and strokes (Ridker et al., <em>NEJM</em>, 2017). If LDL were truly the primary driver, a drug that ignores LDL entirely should have had no cardiovascular benefit. It did. The inflammation model accounts for this; the lipid hypothesis cannot.</p>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="lmhr">
-    <span class="label">The Human Evidence</span>
-    <h2>Lean Mass Hyper-Responders: The Natural Experiment That Changes Everything</h2>
-    <p>If LDL cholesterol were truly the primary engine of heart disease, then people with astronomically high LDL levels should show rapid, severe plaque buildup in their arteries. A remarkable population of people - known as Lean Mass Hyper-Responders, or LMHRs - provides a natural experiment that tests this assumption directly in living human beings.</p>
-    <p>LMHRs are individuals who adopt a low-carbohydrate or ketogenic diet and experience dramatic rises in LDL cholesterol - often reaching levels two to three times what guidelines consider acceptable. At the same time, they are lean, metabolically healthy, with high HDL, very low triglycerides, no insulin resistance, low blood pressure, and low inflammatory markers. In short, they carry the worst LDL numbers in the room while simultaneously having the best metabolic health profile of almost anyone. If LDL alone causes heart disease, their arteries should be catastrophically damaged. What does the evidence actually show?</p>
-    <p>The KETO Trial (Budoff, 2024) and the KETO-CTA study (Soto-Mota, 2025) examined exactly this question. The KETO-CTA study enrolled 100 rigorously selected LMHRs - lean, non-diabetic, non-hypertensive - and measured their Coronary Artery Calcium (CAC) scores, which directly quantify calcified plaque inside coronary arteries. The results challenged the lipid hypothesis in a fundamental way:</p>
-
-    <div class="lmhr-stats">
-      <div class="stat-bubble">
-        <span class="number">54%</span>
-        <span class="desc">of LMHR participants had a CAC score of zero - no calcified plaque - despite years on a high-fat ketogenic diet</span>
-      </div>
-      <div class="stat-bubble">
-        <span class="number">81%</span>
-        <span class="desc">had a CAC score below 100 - clinically low-risk - despite LDL levels of 200-308 mg/dL</span>
-      </div>
-      <div class="stat-bubble">
-        <span class="number">Zero</span>
-        <span class="desc">predictive power: LDL and ApoB levels did NOT predict plaque progression. "Plaque predicts plaque - not ApoB." (Soto-Mota, 2025)</span>
-      </div>
-      <div class="stat-bubble">
-        <span class="number">200-308</span>
-        <span class="desc">mg/dL - the range of LDL-C in participants - far above guidelines - yet over half showed no plaque at all</span>
-      </div>
+<!-- ═══════════════════════════════ COLOPHON ═══════════════════════════════ -->
+<footer class="colophon">
+  <div class="colophon__inner">
+    <div>
+      <p class="colophon__h">A Multimodal Composition</p>
+      <p class="colophon__title">The War on Saturated Fat: We Got It Wrong</p>
+      <p style="font-family:var(--ff-body); font-style:italic; text-transform:none; letter-spacing:0; font-size:13px; color:oklch(0.85 0.014 60 / 0.6); line-height:1.6;">By Dario Braccili · College Writing 101, Spring 2026 · Rutgers University</p>
     </div>
-
-    <div class="lmhr-grid">
-      <div class="lmhr-card highlight">
-        <h4>✅ What the LMHR Evidence Shows</h4>
-        <p>In metabolically healthy individuals with low insulin, very low triglycerides, low hsCRP, and high HDL, extremely elevated LDL did not predict plaque growth. The strongest predictor of whether plaque progressed was whether it already existed at baseline - not LDL levels. A 2025 literature review in <em>Quality in Sport</em> confirmed these findings: after follow-up, 81% of participants maintained low-risk plaque burden despite sky-high LDL, and in those with CAC = 0 at the start, only modest progression was seen. Crucially, that progression was not linked to LDL or ApoB at all (Rafałowicz et al., 2025; Soto-Mota et al., 2025).</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>📋 A Real-World LMHR Case</h4>
-        <p>A 2025 case report published directly in the <em>Journal of the American College of Cardiology (JACC)</em> describes a 64-year-old LMHR woman who adopted a strict ketogenic diet in 2019. Her LDL rose from 120 mg/dL to 381 mg/dL - more than tripling. She declined medication. Coronary Artery Calcium scans were performed in both 2018 and 2024. Both showed a CAC score of <strong>zero</strong>. No plaque. No progression. Six years of massive LDL elevation in the context of excellent metabolic health and zero systemic inflammation produced no arterial damage whatsoever (JACC, 2025).</p>
-      </div>
+    <div>
+      <p class="colophon__h">Typography</p>
+      <p>Playfair Display</p>
+      <p>Source Serif 4</p>
+      <p>IBM Plex Mono</p>
     </div>
-
-    <div class="pullquote">
-      <p>"Crucially, ApoB and LDL-C levels did not predict plaque growth. Baseline plaque burden was the strongest predictor - those who already had some plaque were the ones who progressed."</p>
-      <cite>- Soto-Mota et al., KETO-CTA Trial, JACC Advances, 2025 (summarized in Rafałowicz et al., Quality in Sport, 2025)</cite>
+    <div>
+      <p class="colophon__h">Composition</p>
+      <p>15 Sections</p>
+      <p>12 Peer-Reviewed Sources</p>
+      <p>~28 Minutes Reading</p>
+      <p>1 Embedded Video</p>
     </div>
-
-    <p>The phrase emerging from this research - "plaque predicts plaque, ApoB does not" - directly challenges the assumption that LDL drives atherosclerosis in metabolically healthy individuals. It suggests instead that the key variable is the inflammatory state of the arterial environment, not the volume of LDL particles in the blood. When the endothelium is intact and inflammation is absent, even massive amounts of LDL appear to circulate harmlessly.</p>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="ldl">
-    <span class="label">Rethinking Cholesterol</span>
-    <h2>LDL Is Not the Enemy - Oxidized LDL in a Damaged Artery Is</h2>
-    <p>Cholesterol, including LDL cholesterol, is not a toxin. It is an essential biological molecule that the human body synthesizes and depends upon for hormone production, brain function, cell membrane integrity, and tissue repair. The body produces approximately 75% of all circulating cholesterol independently of dietary intake - when we eat less saturated fat, the liver simply compensates by manufacturing more. This is why dietary changes alone often produce only modest effects on total cholesterol levels.</p>
-    <p>The critical distinction that decades of dietary guidelines failed to communicate is the difference between native LDL and <em>oxidized</em> LDL. Native LDL, circulating in a healthy arterial environment with an intact endothelium, does not cause plaque. It is only when the endothelial wall has been damaged by chronic inflammation - cracked open by the conditions created by insulin resistance - that LDL particles infiltrate the arterial wall. Once inside, they become oxidized by reactive oxygen species. White blood cells (macrophages) then engulf those oxidized LDL particles, transform into "foam cells," and accumulate as fatty streaks: the earliest visible stage of atherosclerosis (MDPI Biomedicines, 2025; PMC/NIH, 2023).</p>
-    <p>In this model, LDL is not the arsonist - it is closer to a bystander that gets trapped inside a burning building. The fire was lit by insulin resistance and chronic inflammation. The table below contrasts the two models:</p>
-
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th>Factor</th>
-          <th>Traditional Lipid Hypothesis</th>
-          <th>Inflammation / Insulin Resistance Model</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Primary cause of plaque</strong></td>
-          <td class="bad">High LDL-C circulating in the blood</td>
-          <td class="good">Endothelial damage from chronic inflammation allowing oxidized LDL entry</td>
-        </tr>
-        <tr>
-          <td><strong>Role of saturated fat</strong></td>
-          <td class="bad">Raises LDL → directly causes heart disease</td>
-          <td class="good">Raises LDL, but benign without the inflammatory environment created by insulin resistance</td>
-        </tr>
-        <tr>
-          <td><strong>Root dietary cause</strong></td>
-          <td class="bad">Too much dietary fat</td>
-          <td class="good">Too many refined carbohydrates → chronic blood sugar elevation → insulin resistance → inflammation</td>
-        </tr>
-        <tr>
-          <td><strong>Best cardiovascular biomarkers</strong></td>
-          <td class="bad">Total LDL-C, Total Cholesterol</td>
-          <td class="good">Triglyceride:HDL ratio, hsCRP, HbA1c, fasting insulin, CAC score</td>
-        </tr>
-        <tr>
-          <td><strong>CANTOS Trial (2017)</strong></td>
-          <td class="bad">Cannot explain: anti-inflammatory drug reduced CVD events with zero LDL change</td>
-          <td class="good">Directly supports: reducing IL-1β inflammation alone reduced cardiovascular events - independent of cholesterol (Ridker et al., NEJM, 2017)</td>
-        </tr>
-        <tr>
-          <td><strong>LMHR evidence (2024-2025)</strong></td>
-          <td class="bad">Cannot explain: LDL of 300+ mg/dL with CAC = 0 and no plaque progression</td>
-          <td class="good">Fully consistent: no inflammation and no insulin resistance means LDL cannot damage intact arteries</td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="font-size:.78rem; font-style:italic; color:var(--muted); margin-top:0;">Table 1. Comparison of the traditional lipid hypothesis versus the inflammation and insulin resistance model of atherosclerosis. (Table by author)</p>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="video">
-    <div class="video-block">
-      <span class="label">Expert Perspective</span>
-      <h3>"No More Myths: Saturated Fat and the Keto Diet"</h3>
-      <p>This video directly addresses the most common misconceptions about saturated fat, walking through the low-carb lipid "triad" of high LDL, high HDL, and low triglycerides, and explaining why LDL cholesterol in the context of a ketogenic diet does not behave the same way as LDL in a high-carbohydrate metabolic environment. It covers the inverse association between BMI and LDL on low-carb diets - a key aspect of the Lean Mass Hyper-Responder phenotype - and explains why applying standard cardiovascular risk models to metabolically healthy, low-carb individuals produces misleading conclusions.</p>
-      <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/Ee5A3_WIh4U?start=1"
-          title="Saturated Fat and Heart Disease - Expert Discussion"
-          allowfullscreen>
-        </iframe>
-      </div>
-      <p class="video-caption">"No More Myths. Saturated Fat and Keto Diet." <em>YouTube</em>, 31 Jan. 2024, www.youtube.com/watch?v=Ee5A3_WIh4U.</p>
-    </div>
-  </section>
-
-  <section id="data">
-    <span class="label">The Data</span>
-    <h2>Where the Real Metabolic Risk Lives</h2>
-    <p>If saturated fat alone were the primary driver of cardiovascular disease, LDL cholesterol should be the dominant predictor of heart attack risk across all populations. But large population studies and clinical trials increasingly show that the most powerful predictors of cardiovascular events are markers of metabolic dysfunction and systemic inflammation - not LDL cholesterol in isolation. The chart below illustrates the relative cardiovascular risk associated with major risk factors, synthesized from the CANTOS trial, MDPI Biomedicines (2025), and the KETO-CTA trial data (Soto-Mota, 2025).</p>
-
-    <div class="chart-wrap">
-      <div class="chart-row">
-        <span class="chart-label">Insulin Resistance / Type 2 Diabetes</span>
-        <div class="chart-track"><div class="chart-bar" style="width:88%; background:var(--red);">2-4× increased risk</div></div>
-        <span class="chart-pct">Very High</span>
-      </div>
-      <div class="chart-row">
-        <span class="chart-label">Chronic Inflammation (high hsCRP)</span>
-        <div class="chart-track"><div class="chart-bar" style="width:74%; background:var(--red);">Strong independent predictor</div></div>
-        <span class="chart-pct">High</span>
-      </div>
-      <div class="chart-row">
-        <span class="chart-label">High Triglycerides / Low HDL</span>
-        <div class="chart-track"><div class="chart-bar" style="width:62%; background:#b8860b;">Atherogenic dyslipidemia</div></div>
-        <span class="chart-pct">High</span>
-      </div>
-      <div class="chart-row">
-        <span class="chart-label">Existing CAC Score &gt; 100</span>
-        <div class="chart-track"><div class="chart-bar" style="width:56%; background:#b8860b;">Strongest plaque-progression predictor</div></div>
-        <span class="chart-pct">High</span>
-      </div>
-      <div class="chart-row">
-        <span class="chart-label">Elevated LDL-C (isolated, no other risk factors)</span>
-        <div class="chart-track"><div class="chart-bar" style="width:28%; background:var(--teal);">Context-dependent</div></div>
-        <span class="chart-pct">Moderate</span>
-      </div>
-      <div class="chart-row">
-        <span class="chart-label">Elevated LDL in metabolically healthy LMHR</span>
-        <div class="chart-track"><div class="chart-bar" style="width:11%; background:var(--teal);">Unclear / low</div></div>
-        <span class="chart-pct">Low?</span>
-      </div>
-    </div>
-    <p class="chart-note">Figure 2. Relative cardiovascular risk contribution by factor, synthesized from CANTOS trial data (2017), MDPI Biomedicines (2025), AHA Journals, and KETO-CTA trial (Soto-Mota, 2025). Risk levels are qualitative summaries for illustrative purposes. (Chart by author)</p>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="case-study">
-    <span class="label">Case Study</span>
-    <h2>The 64-Year-Old Woman With LDL of 381 and Zero Plaque</h2>
-    <p>One of the most striking real-world examples of the LMHR phenomenon was published as a case report in the <em>Journal of the American College of Cardiology</em> in 2025. A 64-year-old woman with no prior cardiovascular disease and no family history of early atherosclerosis adopted a strict ketogenic diet in 2019. Within a few years, her total cholesterol rose from approximately 200 mg/dL to 487 mg/dL, and her LDL climbed from 120 mg/dL to 381 mg/dL - more than tripling. Under standard lipid guidelines, she would be classified as extremely high-risk and immediately prescribed cholesterol-lowering medication.</p>
-    <p>She declined medication through shared decision-making with her physician. Crucially, her other metabolic markers told a completely different story: her triglycerides were very low, her HDL was high, her high-sensitivity CRP (inflammation marker) was normal, her HbA1c (blood sugar marker) was normal, and her kidney and liver function were all healthy. She had two Coronary Artery Calcium scans performed - one in 2018 and one in 2024. Both returned a score of zero. No calcified plaque. No arterial damage. Six years of LDL levels that would terrify most cardiologists produced no measurable plaque whatsoever (Garcia et al., JACC, 2025).</p>
-    <p>This case does not prove that high LDL is always safe. But it illustrates powerfully that LDL in the absence of insulin resistance and systemic inflammation behaves very differently than LDL in a metabolically compromised body. The woman's metabolic environment - low inflammation, low insulin, excellent blood sugar control - appears to have prevented the endothelial damage that would have allowed LDL to become dangerous in the first place.</p>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="key-terms">
-    <span class="label">Key Terms</span>
-    <h2>Understanding the Language of This Debate</h2>
-    <div class="lmhr-grid">
-      <div class="lmhr-card">
-        <h4>Endothelium</h4>
-        <p>The single-cell layer lining the inside of every artery in the human body. When intact, it acts as a barrier that keeps LDL cholesterol out of the arterial wall. When damaged by chronic inflammation, it allows LDL to enter, oxidize, and begin forming plaque. Endothelial health - not cholesterol levels - is the key variable in whether atherosclerosis begins.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>Insulin Resistance</h4>
-        <p>A metabolic condition in which the body's cells stop responding normally to insulin, leaving blood sugar chronically elevated. The body compensates by producing more insulin, creating a state of hyperinsulinemia that promotes inflammation, damages the endothelium, and drives plaque formation. Insulin resistance is the foundational condition underlying Type 2 diabetes and is considered a primary driver of cardiovascular disease.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>Coronary Artery Calcium (CAC) Score</h4>
-        <p>A measurement obtained via CT scan that directly quantifies the amount of calcified plaque inside the coronary arteries. A CAC score of zero means no calcified plaque is detectable. Unlike LDL cholesterol - which is a blood measurement - the CAC score tells you what is actually happening inside the arteries themselves. It is considered a much more direct indicator of cardiovascular risk than LDL alone.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>Lean Mass Hyper-Responder (LMHR)</h4>
-        <p>A phenotype first identified by researcher Dave Feldman, describing lean, metabolically healthy individuals who experience dramatic LDL increases when adopting a low-carbohydrate or ketogenic diet. LMHRs simultaneously show very high HDL and very low triglycerides - the opposite of the dangerous "atherogenic dyslipidemia" pattern. Their existence challenges the idea that high LDL is always a cardiac risk signal.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>Oxidized LDL</h4>
-        <p>The dangerous form of LDL cholesterol. Native LDL circulating in the bloodstream is not inherently harmful. It becomes dangerous only when it enters a damaged arterial wall and is exposed to reactive oxygen species, which oxidize it. White blood cells then engulf oxidized LDL, forming foam cells - the building block of arterial plaque. Chronic inflammation creates the conditions for LDL oxidation; without endothelial damage, this process does not begin.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>hsCRP (High-Sensitivity C-Reactive Protein)</h4>
-        <p>A blood marker that reflects the level of systemic inflammation in the body. Elevated hsCRP is associated with increased cardiovascular risk independently of LDL cholesterol. The CANTOS trial specifically enrolled patients with elevated hsCRP and demonstrated that reducing inflammation alone - without touching LDL - significantly reduced cardiovascular events (Ridker et al., NEJM, 2017). hsCRP is considered a more direct marker of cardiovascular risk than LDL in many metabolic contexts.</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="stakeholders">
-    <span class="label">Key Stakeholders</span>
-    <h2>Who Has a Stake in This Debate?</h2>
-    <div class="lmhr-grid">
-      <div class="lmhr-card highlight">
-        <h4>Patients With Metabolic Syndrome and Type 2 Diabetes</h4>
-        <p>Approximately 38 million Americans have Type 2 diabetes and an estimated 96 million more are prediabetic, meaning they have insulin resistance to some degree. These patients are the highest-risk group for cardiovascular disease - not because of their LDL levels, but because of their chronic metabolic inflammation and endothelial damage. If the inflammation model is correct, the most important intervention for this group is carbohydrate reduction to restore insulin sensitivity, not simply LDL-lowering medication.</p>
-      </div>
-      <div class="lmhr-card highlight">
-        <h4>Physicians and Cardiologists</h4>
-        <p>Doctors are trained to use LDL as the primary cardiovascular risk marker and to prescribe statins when it is elevated. If the evidence increasingly shows that LDL in metabolically healthy individuals is not a reliable risk predictor, physicians face a difficult question: are they overtreating some patients with medication while undertreating the underlying drivers of insulin resistance and inflammation? The LMHR research directly challenges standard clinical decision-making.</p>
-      </div>
-      <div class="lmhr-card highlight">
-        <h4>The Food and Agricultural Industry</h4>
-        <p>For decades, the dietary guidelines that told Americans to eat less fat were enormously profitable for the processed food industry. Low-fat products replaced fat with refined sugars and carbohydrates. If the science now points toward excess carbohydrates as the primary driver of cardiovascular disease, the food industry faces major pressure to reformulate its products - and to reckon with decades of marketing built on the low-fat premise.</p>
-      </div>
-      <div class="lmhr-card highlight">
-        <h4>Government Health Agencies</h4>
-        <p>The USDA Dietary Guidelines for Americans, updated every five years, have long recommended limiting saturated fat to under 10% of daily calories. These guidelines influence what is served in school cafeterias, military meals, hospitals, and federally funded food assistance programs. If the science shifts away from the lipid hypothesis, government agencies face pressure to revise guidelines that have shaped the American diet for half a century - a politically complicated process, as seen in the ongoing 2025-2030 Dietary Guidelines debate.</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="interesting-fact">
-    <span class="label">Interesting Fact</span>
-    <h2>The Drug That Proved Inflammation Drives Heart Disease - Without Touching Cholesterol</h2>
-    <p>One of the most remarkable findings in modern cardiology came from the 2017 CANTOS trial. Researchers enrolled 10,061 patients who had already suffered a heart attack and had persistently elevated levels of hsCRP - the inflammation marker - despite their cholesterol being managed. They were given either a placebo or canakinumab, a drug that specifically neutralizes the inflammatory protein IL-1 beta. The drug had no effect on LDL cholesterol whatsoever. None. Yet the group receiving the 150 mg dose experienced a statistically significant reduction in recurrent heart attacks, strokes, and cardiovascular deaths (Ridker et al., NEJM, 2017).</p>
-    <p>I find this finding extraordinary because it essentially runs a controlled experiment that isolates inflammation from cholesterol. If LDL were the primary driver of cardiovascular events, a drug that only targets inflammation and does nothing to LDL should produce no cardiovascular benefit. Instead it produced a meaningful one. As the principal investigator Dr. Paul Ridker stated: "We found that in high-risk patients, a drug that lowers inflammation but has no effect on cholesterol reduced the risk of major adverse cardiovascular events." This is some of the most direct evidence available that the inflammatory model of heart disease is correct - and that the standard focus on LDL alone is incomplete.</p>
-  </section>
-
-  <hr class="section-divider">
-
-  <section id="faq">
-    <span class="label">FAQ</span>
-    <h2>Frequently Asked Questions</h2>
-    <div class="lmhr-grid">
-      <div class="lmhr-card">
-        <h4>Does this mean I can eat as much saturated fat as I want?</h4>
-        <p>Not exactly. The argument here is that saturated fat is not inherently dangerous - its risk is highly dependent on the metabolic context in which it is eaten. If you are consuming it alongside a diet high in refined carbohydrates and sugar, you are creating the conditions for insulin resistance and chronic inflammation, which is where the real danger lies. Saturated fat in a low-carbohydrate, whole-food diet appears to carry much lower risk. Eating unlimited butter on top of a bowl of pasta is a very different metabolic event than eating butter with eggs and vegetables.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>If LDL is not the main problem, why do statins work?</h4>
-        <p>This is a fair question. Statins do reduce cardiovascular events, and they do lower LDL. However, statins also have significant anti-inflammatory effects independent of their cholesterol-lowering action. Several researchers, including Dr. Paul Ridker who led the CANTOS trial, have argued that a meaningful portion of statins' cardiovascular benefit comes from their anti-inflammatory properties rather than LDL reduction alone. This does not mean LDL is irrelevant in all situations - particularly in people with familial hypercholesterolemia - but it complicates the simple "lower LDL = lower risk" narrative.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>Is a ketogenic diet safe for everyone?</h4>
-        <p>A ketogenic diet is not appropriate for everyone, and this composition does not recommend any specific diet. People with certain medical conditions, including those with familial hypercholesterolemia or pre-existing cardiovascular disease, should consult their physician before making major dietary changes. The LMHR evidence comes from a carefully selected group of lean, metabolically healthy individuals - findings from this group may not extend to all people on ketogenic diets, particularly those who are overweight or already metabolically compromised.</p>
-      </div>
-      <div class="lmhr-card">
-        <h4>Has the scientific consensus on saturated fat actually shifted?</h4>
-        <p>The consensus is actively contested and evolving, which is a more accurate description than saying it has shifted. Traditional guidelines from the American Heart Association and the USDA still recommend limiting saturated fat. However, a growing number of researchers and clinicians argue that the evidence base for those guidelines is weaker than assumed, that the replacement of fat with refined carbohydrates was harmful, and that inflammation and insulin resistance are stronger cardiovascular predictors than LDL. The 2025-2030 Dietary Guidelines process is actively revisiting this question.</p>
-      </div>
-    </div>
-  </section>
-
-  <hr class="section-divider">
-
-
-    <span class="label" style="color:var(--gold);">Conclusion</span>
-    <h2>The Enemy Was Never the Fat - It Was the Fire</h2>
-    <p>For half a century, saturated fat has occupied the villain's role in the story of heart disease. But the evidence assembled here points toward a more accurate and more actionable conclusion: saturated fat, consumed in the absence of chronic carbohydrate overload, is not a meaningful driver of cardiovascular disease. The danger is not the fat. The danger is the metabolic fire - chronic inflammation, insulin resistance, and endothelial damage - that excess refined carbohydrate consumption ignites.</p>
-    <p>The Lean Mass Hyper-Responder research provides the most direct human evidence for this position. These individuals carry LDL levels that conventional medicine classifies as dangerously high. Yet the majority show CAC scores of zero - no plaque - after years on high-fat, low-carbohydrate diets. And crucially, it was not LDL levels that predicted who would develop plaque. It was whether plaque already existed - the marker of prior inflammatory damage to arterial walls (Soto-Mota et al., 2025 - note: subsequently retracted due to methodology concerns, with the underlying LMHR data from the Mierzejewski et al. literature review remaining available). In the absence of that damage, high LDL appears to be far less dangerous than the last fifty years of dietary guidelines have led us to believe.</p>
-    <p>The CANTOS trial closed the argument from the other direction: when researchers chemically suppressed inflammation with no effect on cholesterol, cardiovascular events still fell significantly. Inflammation alone - entirely independent of LDL - drives heart disease. This reframes the entire dietary conversation. The question is not whether to choose butter or vegetable oil. The question is whether your body is in a state of chronic metabolic inflammation - a state driven overwhelmingly by excess refined carbohydrates, insulin resistance, and the hyperglycemia of Type 2 diabetes.</p>
-    <p>Saturated fat combined with chronically elevated blood sugar may well contribute to arterial damage. Saturated fat consumed in a metabolically healthy, low-carbohydrate context - based on the best current evidence - appears to be considerably less dangerous than we were told. The war on saturated fat was not merely misguided. It may have pointed an entire civilization toward the very refined carbohydrates that lit the inflammatory fuse all along.</p>
-  </section>
-
-  <section id="works-cited" class="works-cited">
-    <h2>Works Cited</h2>
-    <ul class="cit-list">
-      <li>Kim, Jeong-a, et al. "Reciprocal Relationships Between Insulin Resistance and Endothelial Dysfunction: Molecular and Pathophysiological Mechanisms." <em>Circulation</em>, vol. 113, no. 15, 18 Apr. 2006, pp. 1888-1904, doi:10.1161/CIRCULATIONAHA.105.563213.</li>
-      <li>Chowdhury, Rajiv, et al. "Association of Dietary, Circulating, and Supplement Fatty Acids with Coronary Risk: A Systematic Review and Meta-Analysis." <em>Annals of Internal Medicine</em>, vol. 160, no. 6, 18 Mar. 2014, pp. 398-406, doi:10.7326/M13-1788.</li>
-      <li>Garcia, David, et al. "Increasing Carbohydrate Intake to Reduce Cholesterol Levels: A Lean Mass Hyperresponder Case Report." <em>Journal of the American College of Cardiology</em>, vol. 85, no. 12 Supplement, Apr. 2025, p. 4030, doi:10.1016/S0735-1097(25)04514-0.</li>
-      <li>Brie, Alina Diduta, et al. "Atherosclerosis and Insulin Resistance: Is There a Link Between Them?" <em>Biomedicines</em>, vol. 13, no. 6, 23 May 2025, p. 1291, doi:10.3390/biomedicines13061291.</li>
-      <li>Kosmas, Constantine E., et al. "Insulin Resistance and Cardiovascular Disease." <em>Journal of Medicine</em>, vol. 51, no. 3, Mar. 2023, doi:10.1177/03000605231164548. PMC10069006.</li>
-      <li>Mason, Paul. "Rethinking Heart Disease: Atherosclerosis vs. the Lipid Hypothesis." <em>QuickLab Mobile</em>, 2024, quicklabmobile.com/post/rethinking-heart-disease-dr-paul-masons-take-on-atherosclerosis-vs-the-lipid-hypothesis.</li>
-      <li>Steyers, Curtis M., and Francis J. Miller. "Endothelial Dysfunction in Chronic Inflammatory Diseases." <em>International Journal of Molecular Sciences</em>, vol. 15, no. 7, 25 June 2014, pp. 11324-11349, doi:10.3390/ijms150711324. PMC4139785.</li>
-      <li>Mierzejewski, Jakub, Adam Rafałowicz, and Urszula Justyna Wojciechowska. "High LDL Cholesterol, Low Risk? Lean Mass Hyper-responder Phenotype - A Literature Review." <em>Quality in Sport</em>, vol. 43, 4 July 2025, p. 61260, doi:10.12775/QS.2025.43.61260.</li>
-      <li>"No More Myths. Saturated Fat and Keto Diet." <em>YouTube</em>, 31 Jan. 2024, www.youtube.com/watch?v=Ee5A3_WIh4U.</li>
-      <li>Optimal Wellness MD. "Atherosclerosis: Is It Due to Lipids, Insulin, or Inflammation?" <em>Optimal Wellness MD Blog</em>, 26 Mar. 2025, www.optimalwellnessmd.com/blog/uncategorized/atherosclerosis-is-it-due-to-lipids-insulin-or-inflammation.</li>
-      <li>Ridker, Paul M., et al. "Antiinflammatory Therapy with Canakinumab for Atherosclerotic Disease." <em>New England Journal of Medicine</em>, vol. 377, 27 Aug. 2017, pp. 1119-1131, doi:10.1056/NEJMoa1707914.</li>
-      <li>Soto-Mota, Adrian, et al. "Plaque Begets Plaque, ApoB Does Not: Longitudinal Data from the KETO-CTA Trial." <em>JACC: Advances</em>, vol. 4, no. 7, July 2025, p. 101686, doi:10.1016/j.jacadv.2025.101686. <strong>Retracted March 2026</strong> by the authors and editors following concerns about methodology.</li>
-
-    </ul>
-  </section>
-
-</main>
-
-<footer>
-  Final Draft Multimodal Composition &nbsp;·&nbsp; College Writing, Spring 2026 &nbsp;·&nbsp; Rutgers University
+  </div>
+  <div class="colophon__rule">
+    <span>© 2026 · Dario Braccili</span>
+    <span>Set in serif &amp; mono</span>
+    <span>Press P to print</span>
+  </div>
 </footer>
 
+<script>
+(() => {
+  // Reading progress + section tracking
+  const bar = document.getElementById('progressBar');
+  const head = document.getElementById('runningHead');
+  const sectMarker = document.getElementById('sectMarker');
+  const readMarker = document.getElementById('readMarker');
+  const sections = [...document.querySelectorAll('section[id]')];
+  const railLinks = [...document.querySelectorAll('.rail__a')];
+  const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV'];
+
+  function onScroll() {
+    const h = document.documentElement;
+    const sc = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? Math.min(100, Math.max(0, (sc / max) * 100)) : 0;
+    bar.style.setProperty('--p', pct + '%');
+    if (readMarker) readMarker.textContent = String(Math.round(pct)).padStart(2,'0') + '%';
+
+    // show running head after cover scrolls off
+    if (sc > 380) head.classList.add('is-visible');
+    else head.classList.remove('is-visible');
+  }
+
+  // active section
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        // rail active
+        railLinks.forEach(a => {
+          a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+        });
+        // running head marker
+        const idx = sections.findIndex(s => s.id === id);
+        if (idx >= 0 && idx < roman.length && sectMarker) {
+          sectMarker.textContent = roman[idx];
+        }
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+  sections.forEach(s => io.observe(s));
+
+  // reveal-on-scroll for .reveal blocks
+  const revealIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in-view');
+        revealIo.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.reveal').forEach(el => revealIo.observe(el));
+
+  // chart bar animation
+  const chartIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in-view');
+        chartIo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.chart__row').forEach((r, i) => {
+    // staggered delays
+    r.style.transitionDelay = (i * 80) + 'ms';
+    chartIo.observe(r);
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // print shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === 'p' || e.key === 'P') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      const tag = (document.activeElement?.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+      window.print();
+    }
+  });
+})();
+</script>
+
+<!-- ─── Three.js + Interactive Lab ─── -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  /* ════════════════ Engagement tracking ════════════════ */
+  const engBar = document.getElementById('engBar');
+  const engFill = document.getElementById('engFill');
+  const engCount = document.getElementById('engCount');
+  const engaged = new Set();
+  function engage(id) {
+    if (engaged.has(id)) return;
+    engaged.add(id);
+    const n = engaged.size;
+    engCount.textContent = n;
+    engFill.style.width = Math.min(100, (n / 10) * 100) + '%';
+    if (n >= 1) engBar.classList.add('is-visible');
+    if (n >= 10) {
+      setTimeout(() => engBar.classList.remove('is-visible'), 2400);
+    }
+  }
+
+  /* ════════════════ Click-to-reveal: mechanism nodes ════════════════ */
+  document.querySelectorAll('.node[data-locked="true"]').forEach(node => {
+    node.addEventListener('click', () => {
+      node.setAttribute('data-locked', 'false');
+      engage('node-' + node.dataset.step);
+    });
+  });
+
+  /* ════════════════ Click-to-reveal: big number cells (count-up) ════════════════ */
+  document.querySelectorAll('.bignums__cell[data-locked="true"]').forEach(cell => {
+    cell.addEventListener('click', () => {
+      if (cell.dataset.locked === 'false') return;
+      cell.setAttribute('data-locked', 'false');
+      engage('big-' + cell.dataset.target);
+      const target = parseInt(cell.dataset.target, 10);
+      const numEl = cell.querySelector('.bignums__num');
+      const unitHTML = numEl.querySelector('.unit') ? numEl.querySelector('.unit').outerHTML : '';
+      const dur = 1100;
+      const start = performance.now();
+      const startVal = target === 0 ? 100 : 0;
+      function tick(now) {
+        const t = Math.min(1, (now - start) / dur);
+        const e = 1 - Math.pow(1 - t, 3);
+        const v = Math.round(startVal + (target - startVal) * e);
+        numEl.innerHTML = v + unitHTML;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  });
+
+  /* ════════════════ Three.js interactive arterial scene ════════════════ */
+  if (!window.THREE) return;
+  const wrap = document.getElementById('labCanvasWrap');
+  if (!wrap) return;
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x1a1814, 8, 22);
+
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 0, 11);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+  wrap.appendChild(renderer.domElement);
+
+  function resize() {
+    const r = wrap.getBoundingClientRect();
+    renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / r.height;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // lights
+  const amb = new THREE.AmbientLight(0xfff0d4, 0.35);
+  scene.add(amb);
+  const key = new THREE.DirectionalLight(0xffd28a, 1.0);
+  key.position.set(5, 5, 5);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0xff9870, 0.4);
+  rim.position.set(-5, -3, 2);
+  scene.add(rim);
+
+  // Arterial wall — a translucent torus channel (the lumen seen end-on)
+  const wallGeom = new THREE.TorusGeometry(4.6, 0.55, 24, 96);
+  const wallMat = new THREE.MeshStandardMaterial({
+    color: 0x6b3a2e,
+    roughness: 0.7,
+    metalness: 0.05,
+    transparent: true,
+    opacity: 0.42,
+    emissive: 0x2a1410,
+    emissiveIntensity: 0.4,
+  });
+  const wall = new THREE.Mesh(wallGeom, wallMat);
+  wall.rotation.x = Math.PI / 2;
+  scene.add(wall);
+
+  // Endothelium (inner liner) — a thinner ring that "cracks" with stress
+  const linerGeom = new THREE.TorusGeometry(4.0, 0.06, 16, 96);
+  const linerMat = new THREE.MeshStandardMaterial({
+    color: 0xf5d896,
+    emissive: 0xc89a4a,
+    emissiveIntensity: 0.5,
+    transparent: true,
+    opacity: 0.85,
+  });
+  const liner = new THREE.Mesh(linerGeom, linerMat);
+  liner.rotation.x = Math.PI / 2;
+  scene.add(liner);
+
+  // Pools of particles
+  const LDL_COUNT = 28;
+  const CYTOKINE_MAX = 36;
+  const MACROPHAGE_MAX = 8;
+
+  const ldlGroup = new THREE.Group(); scene.add(ldlGroup);
+  const cytoGroup = new THREE.Group(); scene.add(cytoGroup);
+  const macroGroup = new THREE.Group(); scene.add(macroGroup);
+
+  // LDL particles — gold spheres orbiting the lumen
+  const ldlGeom = new THREE.IcosahedronGeometry(0.18, 0);
+  const ldlMat = new THREE.MeshStandardMaterial({
+    color: 0xe8b95c,
+    emissive: 0x6a4818,
+    emissiveIntensity: 0.6,
+    metalness: 0.3,
+    roughness: 0.45,
+  });
+  const ldls = [];
+  for (let i = 0; i < LDL_COUNT; i++) {
+    const m = new THREE.Mesh(ldlGeom, ldlMat);
+    const angle = (i / LDL_COUNT) * Math.PI * 2 + Math.random() * 0.3;
+    const radius = 3.4 + Math.random() * 0.5;
+    m.userData = { angle, radius, speed: 0.4 + Math.random() * 0.3, wobble: Math.random() * Math.PI * 2 };
+    ldlGroup.add(m);
+    ldls.push(m);
+  }
+
+  // Cytokines — small rust-red spheres that swarm at high carb
+  const cytoGeom = new THREE.IcosahedronGeometry(0.09, 0);
+  const cytoMat = new THREE.MeshStandardMaterial({
+    color: 0xc25a3d,
+    emissive: 0x8a2a18,
+    emissiveIntensity: 0.9,
+  });
+  const cytos = [];
+  for (let i = 0; i < CYTOKINE_MAX; i++) {
+    const m = new THREE.Mesh(cytoGeom, cytoMat);
+    m.visible = false;
+    m.userData = {
+      angle: Math.random() * Math.PI * 2,
+      radius: 2.5 + Math.random() * 1.4,
+      speed: 0.8 + Math.random() * 0.6,
+      tilt: (Math.random() - 0.5) * 0.4,
+      phase: Math.random() * Math.PI * 2,
+    };
+    cytoGroup.add(m);
+    cytos.push(m);
+  }
+
+  // Macrophages — released on click — larger dark blobs that chase LDLs
+  const macroGeom = new THREE.IcosahedronGeometry(0.32, 1);
+  const macroMat = new THREE.MeshStandardMaterial({
+    color: 0x3a3028,
+    emissive: 0x1a1410,
+    emissiveIntensity: 0.4,
+    roughness: 0.85,
+  });
+  const macros = [];
+  function spawnMacrophage() {
+    if (macros.length >= MACROPHAGE_MAX) {
+      // recycle oldest
+      const old = macros.shift();
+      macroGroup.remove(old);
+    }
+    const m = new THREE.Mesh(macroGeom, macroMat);
+    const angle = Math.random() * Math.PI * 2;
+    m.position.set(Math.cos(angle) * 3.6, Math.sin(angle) * 3.6, 0);
+    m.userData = { life: 0, target: null };
+    macroGroup.add(m);
+    macros.push(m);
+  }
+
+  // Click → spawn macrophage
+  let clickCount = 0;
+  wrap.addEventListener('click', (e) => {
+    // ignore clicks that were drags
+    if (drag.didDrag) { drag.didDrag = false; return; }
+    spawnMacrophage();
+    clickCount++;
+    engage('macro-click');
+    if (clickCount >= 3) engage('macro-3');
+  });
+
+  // Drag to rotate
+  const drag = { active: false, didDrag: false, x: 0, y: 0, rotY: 0.4, rotX: 0.15, vy: 0.0008 };
+  wrap.addEventListener('pointerdown', (e) => {
+    drag.active = true; drag.didDrag = false;
+    drag.x = e.clientX; drag.y = e.clientY;
+    wrap.classList.add('dragging');
+    wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove', (e) => {
+    if (!drag.active) return;
+    const dx = e.clientX - drag.x;
+    const dy = e.clientY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4) drag.didDrag = true;
+    drag.rotY += dx * 0.005;
+    drag.rotX += dy * 0.005;
+    drag.rotX = Math.max(-1.0, Math.min(1.0, drag.rotX));
+    drag.x = e.clientX; drag.y = e.clientY;
+    engage('drag');
+  });
+  wrap.addEventListener('pointerup', (e) => {
+    drag.active = false;
+    wrap.classList.remove('dragging');
+  });
+
+  /* ════════════════ Slider — carb intake drives the simulation ════════════════ */
+  const slider = document.getElementById('carbSlider');
+  const carbVal = document.getElementById('carbVal');
+  const rInsulin = document.querySelector('#r-insulin .lab__readout-v');
+  const rInflam = document.querySelector('#r-inflam .lab__readout-v');
+  const rEndo = document.querySelector('#r-endo .lab__readout-v');
+  const cellInsulin = document.getElementById('r-insulin');
+  const cellInflam = document.getElementById('r-inflam');
+  const cellEndo = document.getElementById('r-endo');
+
+  let carb = 0.30; // 0..1
+
+  function applyCarb(v) {
+    carb = v;
+    const pct = Math.round(v * 100);
+    const labels = ['minimal', 'low', 'moderate', 'elevated', 'high', 'extreme'];
+    const lbl = labels[Math.min(labels.length - 1, Math.floor(v * labels.length))];
+    carbVal.textContent = lbl;
+
+    // readouts
+    const insulin = Math.round(20 + v * 180);          // 20–200
+    const inflam  = Math.round(8 + v * 92);            // 8–100
+    const endo    = Math.round(96 - v * 62);           // 96–34
+    rInsulin.textContent = insulin;
+    rInflam.textContent = inflam;
+    rEndo.textContent = endo + '%';
+
+    cellInflam.classList.toggle('is-hot', v > 0.55);
+    cellEndo.classList.toggle('is-hot', v < 0.5);
+    cellInsulin.classList.toggle('is-hot', v > 0.7);
+
+    // cytokine population
+    const target = Math.round(v * CYTOKINE_MAX);
+    cytos.forEach((c, i) => { c.visible = i < target; });
+
+    // endothelium color shifts to rust as carb rises
+    const r = 0xf5 + (0xc2 - 0xf5) * v;
+    const g = 0xd8 + (0x5a - 0xd8) * v;
+    const b = 0x96 + (0x3d - 0x96) * v;
+    linerMat.color.setRGB(r/255, g/255, b/255);
+    linerMat.emissiveIntensity = 0.5 + v * 0.8;
+    wallMat.emissiveIntensity = 0.4 + v * 0.6;
+
+    engage('slider-' + Math.floor(v * 4));
+  }
+
+  slider.addEventListener('input', () => applyCarb(slider.value / 100));
+  applyCarb(0.30);
+
+  /* ════════════════ Render loop ════════════════ */
+  const fpsReadout = document.getElementById('fpsReadout');
+  let lastT = performance.now();
+  let frames = 0, fpsT = lastT;
+  let runtimeRotY = drag.rotY;
+
+  function loop(now) {
+    const dt = Math.min(0.05, (now - lastT) / 1000);
+    lastT = now;
+
+    // auto-rotate when not dragging
+    if (!drag.active) drag.rotY += drag.vy * dt * 60;
+    runtimeRotY += (drag.rotY - runtimeRotY) * 0.08;
+    scene.rotation.y = runtimeRotY;
+    scene.rotation.x = drag.rotX;
+
+    // LDLs orbit
+    const speedMult = 1 + carb * 1.4;
+    ldls.forEach(m => {
+      m.userData.angle += m.userData.speed * dt * speedMult;
+      m.userData.wobble += dt * 2;
+      const r = m.userData.radius + Math.sin(m.userData.wobble) * 0.08;
+      m.position.x = Math.cos(m.userData.angle) * r;
+      m.position.y = Math.sin(m.userData.angle) * r;
+      m.position.z = Math.sin(m.userData.wobble * 0.7) * 0.25;
+      m.rotation.x += dt * 0.6;
+      m.rotation.y += dt * 0.8;
+    });
+
+    // Cytokines swarm
+    cytos.forEach(c => {
+      if (!c.visible) return;
+      c.userData.angle += c.userData.speed * dt;
+      c.userData.phase += dt * 2.5;
+      const r = c.userData.radius + Math.sin(c.userData.phase) * 0.4;
+      c.position.x = Math.cos(c.userData.angle) * r;
+      c.position.y = Math.sin(c.userData.angle) * r;
+      c.position.z = Math.sin(c.userData.phase + c.userData.tilt) * 0.6;
+    });
+
+    // Macrophages: drift outward, fade, then despawn
+    for (let i = macros.length - 1; i >= 0; i--) {
+      const m = macros[i];
+      m.userData.life += dt;
+      const t = m.userData.life;
+      const scale = 1 + t * 0.4;
+      m.scale.setScalar(scale);
+      // chase the nearest LDL
+      let nearest = null, nd = Infinity;
+      ldls.forEach(l => {
+        const d = m.position.distanceTo(l.position);
+        if (d < nd) { nd = d; nearest = l; }
+      });
+      if (nearest) {
+        const dir = nearest.position.clone().sub(m.position).normalize();
+        m.position.add(dir.multiplyScalar(dt * 0.9));
+      }
+      m.material = macroMat.clone();
+      m.material.opacity = Math.max(0, 1 - t / 4);
+      m.material.transparent = true;
+      if (t > 4) {
+        macroGroup.remove(m);
+        macros.splice(i, 1);
+      }
+    }
+
+    renderer.render(scene, camera);
+
+    frames++;
+    if (now - fpsT > 500) {
+      const fps = Math.round((frames * 1000) / (now - fpsT));
+      fpsReadout.textContent = fps + ' fps';
+      frames = 0; fpsT = now;
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+})();
+</script>
 </body>
 </html>
